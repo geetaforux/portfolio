@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lex Leviter — AI-Powered Law Firm Platform · Geetapriya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #050505;
+  --white: #f5f2ee;
+  --warm: #1e1b14;
+  --accent: #d8b87c;
+  --accent2: #7c6f5e;
+  --muted: rgba(245,242,238,0.55);
+  --border: rgba(245,242,238,0.08);
+  --accent-glow: rgba(201,169,110,0.15);
+  --cs-blue: #1a2a4a;
+  --cs-gold: #f0b429;
+  /* Lex accent — deep forest + amber */
+  --lex-dark: #0c1208;
+  --lex-green: #2a3d1e;
+  --lex-amber: #c9a84c;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--black);
+  color: var(--white);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ─────────────────────────────────────── */
+#cursor {
+  position: fixed; width: 12px; height: 12px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s, width 0.25s, height 0.25s, background 0.25s;
+}
+#cursor-ring {
+  position: fixed; width: 40px; height: 40px;
+  border: 1px solid rgba(201,169,110,0.5); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease-out, width 0.3s, height 0.3s;
+}
+body:has(a:hover) #cursor, body:has(button:hover) #cursor {
+  width: 24px; height: 24px; background: var(--white);
+}
+
+/* ── NAV ─────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 56px;
+  background: rgba(5,5,5,0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(245,242,238,0.05);
+}
+.nav-logo-wrap { display: flex; align-items: center; gap: 12px; }
+.logo-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  width: auto; height: auto; border-radius: 0; flex-shrink: 0;
+}
+.nav-logo {
+  font-family: 'DM Serif Display', serif; font-size: 20px;
+  color: var(--white); text-decoration: none; letter-spacing: -0.02em;
+}
+.nav-back {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--muted); text-decoration: none;
+  letter-spacing: 0.04em; font-weight: 300; transition: color 0.3s;
+}
+.nav-back:hover { color: var(--accent); }
+.nav-back svg { transition: transform 0.3s; }
+.nav-back:hover svg { transform: translateX(-4px); }
+
+/* ── KEYFRAMES ───────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+/* ── REVEAL ──────────────────────────────────────── */
+.js .reveal {
+  opacity: 0; transform: translateY(36px);
+  transition: opacity 0.9s cubic-bezier(.16,1,.3,1), transform 0.9s cubic-bezier(.16,1,.3,1);
+}
+.js .reveal.in { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── SECTION BASE ────────────────────────────────── */
+section { position: relative; z-index: 10; }
+.section-pad { padding: 120px 56px; }
+
+.section-eyebrow {
+  display: flex; align-items: center; gap: 16px;
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 56px; font-weight: 300;
+}
+.section-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+
+/* ── HERO ────────────────────────────────────────── */
+.cs-hero {
+  position: relative; min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 96px 56px 80px;
+  overflow: hidden;
+  background: var(--black);
+}
+.cs-hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 65% 35%, rgba(42,61,30,0.4) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(201,169,110,0.05) 0%, transparent 60%);
+}
+.cs-hero-bg::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(245,242,238,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,242,238,0.02) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 100%);
+}
+
+/* Large editorial number */
+.hero-editorial-num {
+  position: absolute; right: 48px; bottom: 60px;
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(160px, 22vw, 320px);
+  line-height: 1; letter-spacing: -0.06em;
+  color: rgba(245,242,238,0.03);
+  pointer-events: none; z-index: 1;
+  user-select: none;
+}
+
+.cs-hero-tag {
+  position: relative; z-index: 10;
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 28px;
+  opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+}
+.cs-hero-tag::before { content: ''; width: 28px; height: 1px; background: var(--accent); }
+
+.cs-hero-title {
+  position: relative; z-index: 10;
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(52px, 8vw, 120px);
+  line-height: 0.92; letter-spacing: -0.04em;
+  color: var(--white); margin-bottom: 36px;
+  opacity: 0; animation: fadeUp 0.9s 0.6s cubic-bezier(.16,1,.3,1) forwards;
+}
+.cs-hero-title em { font-style: italic; color: var(--accent); }
+
+.cs-hero-quote {
+  position: relative; z-index: 10;
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(15px, 1.6vw, 20px);
+  font-style: italic;
+  color: rgba(245,242,238,0.4);
+  max-width: 480px; line-height: 1.6;
+  margin-bottom: 56px;
+  opacity: 0; animation: fadeUp 0.9s 0.85s forwards;
+}
+.cs-hero-quote-attr {
+  display: block;
+  margin-top: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245,242,238,0.2);
+}
+
+.cs-meta-row {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; gap: 48px; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 0.9s 1.05s forwards;
+}
+.cs-meta-item { display: flex; flex-direction: column; gap: 6px; }
+.cs-meta-label {
+  font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(245,242,238,0.3); font-weight: 300;
+}
+.cs-meta-value {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px; letter-spacing: -0.03em; color: var(--white); line-height: 1;
+}
+.cs-meta-value.small { font-size: 16px; font-family: 'DM Sans', sans-serif; font-weight: 300; }
+.cs-meta-divider { width: 1px; height: 48px; background: var(--border); }
+
+.cs-hero-tags {
+  position: relative; z-index: 10;
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-top: 40px;
+  opacity: 0; animation: fadeUp 0.9s 1.2s forwards;
+}
+.cs-hero-tag-pill {
+  font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase;
+  color: rgba(245,242,238,0.35);
+  border: 1px solid rgba(245,242,238,0.1);
+  padding: 6px 14px; border-radius: 100px; font-weight: 300;
+}
+
+/* ── PROBLEM / ROLE ──────────────────────────────── */
+.ps-section { background: #0a0908; padding: 120px 56px; }
+.ps-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+}
+.ps-label {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  font-weight: 500; padding: 5px 12px; border-radius: 100px;
+  display: inline-flex; margin-bottom: 24px;
+}
+.ps-label.problem { color: #e05c5c; background: rgba(224,92,92,0.1); border: 1px solid rgba(224,92,92,0.2); }
+.ps-label.role    { color: var(--accent); background: rgba(201,169,110,0.08); border: 1px solid rgba(201,169,110,0.2); }
+
+.ps-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(28px, 3vw, 42px);
+  letter-spacing: -0.025em; line-height: 1.15;
+  color: var(--white); margin-bottom: 20px;
+}
+.ps-body { font-size: 15px; font-weight: 300; color: var(--muted); line-height: 1.85; }
+
+.role-items { display: flex; flex-direction: column; gap: 20px; margin-top: 8px; }
+.role-item { display: flex; gap: 16px; align-items: flex-start; }
+.role-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(201,169,110,0.08); border: 1px solid rgba(201,169,110,0.18);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+.role-text h4 { font-size: 14.5px; font-weight: 500; color: var(--white); margin-bottom: 4px; }
+.role-text p  { font-size: 13.5px; font-weight: 300; color: var(--muted); line-height: 1.7; }
+
+/* ── INVOLVEMENT STRIP ───────────────────────────── */
+.involvement-section { background: var(--black); padding: 100px 56px; }
+.involvement-inner {
+  display: grid; grid-template-columns: 260px 1fr; gap: 80px; align-items: start;
+}
+.involvement-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(80px, 10vw, 140px);
+  line-height: 1; letter-spacing: -0.05em;
+  color: rgba(245,242,238,0.06);
+}
+.involvement-body {}
+.involvement-label {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); font-weight: 300; margin-bottom: 16px;
+}
+.involvement-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(28px, 3.5vw, 48px);
+  letter-spacing: -0.03em; line-height: 1.1;
+  color: var(--white); margin-bottom: 24px;
+}
+.involvement-text {
+  font-size: 15px; font-weight: 300; color: var(--muted);
+  line-height: 1.85; max-width: 560px; margin-bottom: 40px;
+}
+.involvement-cols {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+}
+.involvement-col-item {}
+.involvement-col-item h4 {
+  font-size: 13px; font-weight: 500; color: var(--white);
+  margin-bottom: 6px; letter-spacing: -0.01em;
+  display: flex; align-items: center; gap: 8px;
+}
+.involvement-col-item h4::before {
+  content: ''; width: 5px; height: 5px;
+  border-radius: 50%; background: var(--accent); flex-shrink: 0;
+}
+.involvement-col-item p {
+  font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.65;
+}
+
+/* ── PLATFORM SHOWCASE ───────────────────────────── */
+.platform-section {
+  background: #07080a;
+  padding: 120px 56px;
+  position: relative; overflow: hidden;
+}
+.platform-section::before {
+  content: '';
+  position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 800px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(42,61,30,0.25) 0%, transparent 65%);
+  pointer-events: none;
+}
+.platform-headline {
+  text-align: center; margin-bottom: 16px; position: relative; z-index: 10;
+}
+.platform-headline h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(40px, 6vw, 88px);
+  letter-spacing: -0.04em; line-height: 1;
+  color: var(--white);
+}
+.platform-subtitle {
+  text-align: center; font-size: 14px; font-weight: 300;
+  color: var(--muted); letter-spacing: 0.02em;
+  margin-bottom: 72px; position: relative; z-index: 10;
+}
+
+/* Feature cards grid */
+.platform-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 16px;
+  position: relative; z-index: 10;
+}
+.platform-card {
+  background: rgba(15,15,15,0.7);
+  border: 1px solid rgba(245,242,238,0.06);
+  border-radius: 16px; padding: 36px 32px;
+  transition: all 0.4s cubic-bezier(.16,1,.3,1);
+  position: relative; overflow: hidden;
+}
+.platform-card:hover {
+  border-color: rgba(201,169,110,0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+}
+.platform-card.wide { grid-column: span 2; }
+.platform-card.accent {
+  background: linear-gradient(145deg, rgba(42,61,30,0.6) 0%, rgba(12,18,8,0.8) 100%);
+  border-color: rgba(201,169,110,0.15);
+}
+.platform-card-icon {
+  width: 40px; height: 40px; margin-bottom: 20px;
+  border-radius: 10px;
+  background: rgba(201,169,110,0.08);
+  border: 1px solid rgba(201,169,110,0.15);
+  display: flex; align-items: center; justify-content: center;
+}
+.platform-card-label {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 10px; font-weight: 300;
+}
+.platform-card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(18px, 2vw, 26px);
+  letter-spacing: -0.02em; color: var(--white);
+  margin-bottom: 10px; line-height: 1.2;
+}
+.platform-card-desc {
+  font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.7;
+}
+
+/* ── DESIGN DECISIONS ────────────────────────────── */
+.decisions-section { background: #050505; padding: 120px 56px; }
+.decisions-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(36px, 5vw, 64px);
+  letter-spacing: -0.04em; color: var(--white);
+  margin-bottom: 72px; line-height: 1.05;
+}
+.decisions-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+}
+.decision-card {
+  background: rgba(12,12,12,0.6);
+  border: 1px solid rgba(245,242,238,0.04);
+  padding: 48px 40px;
+  transition: all 0.4s cubic-bezier(.16,1,.3,1);
+  position: relative; overflow: hidden;
+}
+.decision-card:hover {
+  background: rgba(22,22,22,0.8);
+  border-color: rgba(201,169,110,0.15);
+  transform: translateY(-4px);
+  z-index: 2;
+}
+.decision-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: var(--accent); transform: scaleX(0);
+  transform-origin: left; transition: transform 0.4s cubic-bezier(.16,1,.3,1);
+}
+.decision-card:hover::before { transform: scaleX(1); }
+.decision-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 13px; color: rgba(245,242,238,0.15);
+  letter-spacing: 0.04em; margin-bottom: 20px; font-style: italic;
+}
+.decision-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px; letter-spacing: -0.02em;
+  color: var(--white); margin-bottom: 12px; line-height: 1.25;
+}
+.decision-desc {
+  font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.75;
+}
+
+/* ── IMPACT CALLOUT ──────────────────────────────── */
+.impact-callout {
+  background: #030404;
+  padding: 140px 56px;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.impact-callout::before {
+  content: '';
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(42,61,30,0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+.impact-callout-sub {
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 32px; font-weight: 300;
+}
+.impact-callout-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(40px, 7vw, 104px);
+  letter-spacing: -0.05em; line-height: 0.95;
+  color: var(--white); margin-bottom: 40px;
+  position: relative; z-index: 2;
+}
+.impact-callout-heading em { font-style: italic; color: var(--accent); }
+.impact-callout-body {
+  font-size: 16px; font-weight: 300; color: var(--muted);
+  max-width: 640px; margin: 0 auto;
+  line-height: 1.85; position: relative; z-index: 2;
+}
+
+/* ── LESSONS ─────────────────────────────────────── */
+.lessons-section { background: #0a0908; padding: 120px 56px; }
+.lessons-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+}
+.lessons-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(36px, 5vw, 64px);
+  letter-spacing: -0.04em; line-height: 1.05;
+  color: var(--white); margin-bottom: 0;
+}
+.lessons-list { display: flex; flex-direction: column; gap: 0; }
+.lesson-item {
+  padding: 32px 0;
+  border-bottom: 1px solid rgba(245,242,238,0.06);
+  transition: all 0.3s;
+}
+.lesson-item:first-child { border-top: 1px solid rgba(245,242,238,0.06); }
+.lesson-item:hover .lesson-title { color: var(--accent); }
+.lesson-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px; letter-spacing: -0.02em;
+  color: var(--white); margin-bottom: 10px; line-height: 1.2;
+  transition: color 0.3s;
+}
+.lesson-desc {
+  font-size: 13.5px; font-weight: 300; color: var(--muted); line-height: 1.75;
+}
+
+/* ── CLOSING ─────────────────────────────────────── */
+.closing-section {
+  padding: 140px 56px 120px;
+  background: var(--black);
+  text-align: center; overflow: hidden; position: relative;
+}
+.closing-bg-text {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'DM Serif Display', serif;
+  font-size: 22vw; color: rgba(245,242,238,0.02);
+  white-space: nowrap; pointer-events: none;
+  letter-spacing: -0.06em; line-height: 1;
+}
+.closing-eyebrow {
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 24px; font-weight: 300;
+  position: relative; z-index: 2;
+}
+.closing-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(52px, 8vw, 120px);
+  letter-spacing: -0.05em; line-height: 0.95;
+  color: var(--white); margin-bottom: 24px;
+  position: relative; z-index: 2;
+}
+.closing-heading em { font-style: italic; color: var(--accent); }
+.closing-quote {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic; font-size: 17px;
+  color: rgba(245,242,238,0.3);
+  max-width: 480px; margin: 0 auto 56px;
+  line-height: 1.7; position: relative; z-index: 2;
+}
+.closing-actions {
+  display: flex; align-items: center; justify-content: center;
+  gap: 24px; position: relative; z-index: 2;
+}
+
+/* ── BUTTONS ─────────────────────────────────────── */
+.btn-gold {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--accent); color: #0a0a0a;
+  font-size: 13.5px; font-weight: 500;
+  padding: 15px 32px; border-radius: 100px;
+  text-decoration: none; letter-spacing: 0.02em;
+  transition: all 0.3s; border: none;
+}
+.btn-gold:hover {
+  background: var(--white); transform: translateY(-2px);
+  box-shadow: 0 20px 60px rgba(201,169,110,0.3);
+}
+.btn-outline {
+  font-size: 13.5px; color: var(--muted); text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+  transition: color 0.3s; font-weight: 300; letter-spacing: 0.04em;
+}
+.btn-outline:hover { color: var(--white); }
+
+/* ── DIVIDER ─────────────────────────────────────── */
+.divider { width: 100%; height: 1px; background: var(--border); }
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer {
+  position: relative; z-index: 10;
+  border-top: 1px solid var(--border);
+  padding: 32px 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo {
+  font-family: 'DM Serif Display', serif; font-size: 16px;
+  color: rgba(245,242,238,0.3); text-decoration: none;
+}
+.footer-links { display: flex; gap: 32px; list-style: none; }
+.footer-links a {
+  font-size: 12.5px; color: rgba(245,242,238,0.25);
+  text-decoration: none; letter-spacing: 0.04em; transition: color 0.3s;
+}
+.footer-links a:hover { color: var(--white); }
+
+/* ── HERO MOCKUP (image slot) ────────────────────── */
+.cs-hero-mockup {
+  position: absolute; right: 56px; top: 50%;
+  transform: translateY(-50%);
+  width: 42%; max-width: 580px;
+  z-index: 5;
+  opacity: 0; animation: fadeIn 1.2s 1.3s forwards;
+}
+.cs-hero-mockup-inner {
+  border-radius: 20px;
+  border: 1px solid rgba(201,169,110,0.2);
+  padding: 0;
+  box-shadow: 0 60px 120px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+  position: relative; overflow: hidden;
+  background: rgba(12,12,12,0.6);
+  min-height: 320px;
+}
+.cs-hero-mockup-inner::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  z-index: 1;
+}
+.cs-hero-mockup-inner img {
+  width: 100%; display: block;
+  border-radius: 20px;
+  object-fit: cover; object-position: top left;
+}
+
+/* ── PLATFORM CARD IMAGE SLOT ────────────────────── */
+/* Regular card — image sits above text */
+.platform-card-img-slot {
+  width: 100%; overflow: hidden;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.02);
+  border: 1px dashed rgba(245,242,238,0.08);
+  margin-bottom: 24px;
+  min-height: 180px;
+}
+.platform-card-img-slot img {
+  width: 100%; display: block;
+  object-fit: cover; object-position: top left;
+}
+
+/* Wide card — image sits alongside text */
+.platform-card.wide .platform-card-inner {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 32px; align-items: start;
+}
+.platform-card.wide .platform-card-img-slot {
+  margin-bottom: 0;
+  min-height: 220px; height: 100%;
+}
+
+/* ── GLOW ────────────────────────────────────────── */
+.glow-orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(120px); z-index: 0; pointer-events: none;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 960px) {
+  nav { padding: 20px 24px; }
+  .cs-hero { padding: 100px 24px 64px; }
+  .cs-hero-title { font-size: 52px; }
+  .section-pad, .ps-section, .platform-section,
+  .decisions-section, .lessons-section, .closing-section,
+  .involvement-section { padding: 80px 24px; }
+  .ps-grid, .lessons-grid { grid-template-columns: 1fr; gap: 48px; }
+  .involvement-inner { grid-template-columns: 1fr; gap: 24px; }
+  .involvement-num { font-size: 80px; }
+  .cs-hero-mockup { display: none; }
+  .platform-grid { grid-template-columns: 1fr; }
+  .platform-card.wide { grid-column: span 1; }
+  .platform-card.wide .platform-card-inner { grid-template-columns: 1fr; }
+  .platform-card.wide .platform-card-img-slot { min-height: 180px; }
+  .decisions-grid { grid-template-columns: 1fr; }
+  .involvement-cols { grid-template-columns: 1fr; }
+  footer { padding: 24px; flex-direction: column; gap: 24px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo-wrap">
+    <div class="logo-placeholder">
+      <img src="assets/images/logo/dark-logo.svg" alt="Geetapriya" style="height: 36px; width: auto; max-width: 160px; display: block;">
+    </div>
+    <a href="index.html" class="nav-logo">Geetapriya</a>
+  </div>
+  <a href="index.html#work" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to work
+  </a>
+</nav>
+
+<!-- ═══ HERO ═══════════════════════════════════════ -->
+<section class="cs-hero">
+  <div class="cs-hero-bg"></div>
+  <div class="hero-editorial-num">03</div>
+
+  <div class="cs-hero-tag">Case Study · Legal Tech</div>
+
+  <h1 class="cs-hero-title">
+    Lex <em>Leviter.</em>
+  </h1>
+
+  <p class="cs-hero-quote">
+    "An Idea of i-pods among the walkmans."
+    <span class="cs-hero-quote-attr">— My CEO, to me</span>
+  </p>
+
+  <div class="cs-meta-row">
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">My Role</span>
+      <span class="cs-meta-value small">Lead Designer</span>
+    </div>
+    <div class="cs-meta-divider"></div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Duration</span>
+      <span class="cs-meta-value small">3 Months</span>
+    </div>
+    <div class="cs-meta-divider"></div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Team</span>
+      <span class="cs-meta-value small">Led 1 Junior Designer</span>
+    </div>
+    <div class="cs-meta-divider"></div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Modules</span>
+      <span class="cs-meta-value">5+</span>
+    </div>
+    <div class="cs-meta-divider"></div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Platform</span>
+      <span class="cs-meta-value small">Web · AI-Native</span>
+    </div>
+    <div class="cs-meta-divider"></div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Domain</span>
+      <span class="cs-meta-value small">Legal Tech · AI · SaaS</span>
+    </div>
+  </div>
+
+  <div class="cs-hero-tags">
+    <span class="cs-hero-tag-pill">AI Product</span>
+    <span class="cs-hero-tag-pill">Legal Tech</span>
+    <span class="cs-hero-tag-pill">Onboarding</span>
+    <span class="cs-hero-tag-pill">Document Automation</span>
+    <span class="cs-hero-tag-pill">Systems Design</span>
+  </div>
+
+  <div class="cs-hero-mockup">
+    <div class="cs-hero-mockup-inner">
+      <img src="assets/images/projects/lex/hero.jpg" alt="Lex Leviter — Hero">
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROBLEM / ROLE ════════════════════════════ -->
+<section class="ps-section">
+  <div class="ps-grid">
+    <div class="reveal">
+      <span class="ps-label problem">The Problem</span>
+      <h2 class="ps-heading">A law firm running on informal, untracked tools.</h2>
+      <p class="ps-body">A growing legal practice was managing client intake, case threads, document requests, and team coordination entirely through untracked messaging apps and shared drives. This created zero traceability, frequent miscommunication, and a dependency on individual memory — not systems. Every new hire meant re-teaching tribal knowledge. Every missed message meant a delayed case.</p>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <span class="ps-label role">My Role</span>
+      <div class="role-items">
+        <div class="role-item">
+          <div class="role-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <rect x="2" y="3" width="12" height="10" rx="2" stroke="#d8b87c" stroke-width="1.2"/>
+              <path d="M5 7h6M5 10h4" stroke="#d8b87c" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="role-text">
+            <h4>Information Architecture</h4>
+            <p>Restructured the entire product hierarchy — from intake flow to case closure — into a single coherent platform language.</p>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="5.5" stroke="#d8b87c" stroke-width="1.2"/>
+              <path d="M5 8l2 2 4-4" stroke="#d8b87c" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="role-text">
+            <h4>UI Design across 5 Modules</h4>
+            <p>Designed end-to-end interfaces for Project Intake, Client Threads, Document Hygiene, TSR Generation, and the Lawyer Marketplace.</p>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 2v4M8 10v4M2 8h4M10 8h4" stroke="#d8b87c" stroke-width="1.2" stroke-linecap="round"/>
+              <circle cx="8" cy="8" r="2" stroke="#d8b87c" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <div class="role-text">
+            <h4>Stakeholder Facilitation</h4>
+            <p>Facilitated design reviews with senior advocates and junior associates — reconciling two very different mental models of "how work gets done."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INVOLVEMENT ═══════════════════════════════ -->
+<section class="involvement-section">
+  <div class="involvement-inner">
+    <div class="involvement-num reveal">01</div>
+    <div class="reveal reveal-delay-1">
+      <div class="involvement-label">How I Was Involved</div>
+      <h2 class="involvement-heading">This project needed one person to believe, listen, and then form.</h2>
+      <p class="involvement-text">I joined mid-ideation — the product had ambition but no structure. I worked directly with the founding team to untangle their existing informal tools-based workflow and translate it into a system that could scale. The challenge was designing for lawyers who had never used a product like this before, and building their trust through clarity.</p>
+      <div class="involvement-cols">
+        <div class="involvement-col-item">
+          <h4>UI Designer</h4>
+          <p>Owning end-to-end visual design across all modules — from wireframes to final high-fidelity screens.</p>
+        </div>
+        <div class="involvement-col-item">
+          <h4>Interaction Manager</h4>
+          <p>Mapping micro-interactions across every state — empty, loading, error, and success — to build a consistent experience.</p>
+        </div>
+        <div class="involvement-col-item">
+          <h4>UX Researcher (informal)</h4>
+          <p>Conducted contextual interviews with advocates to understand how legal case work actually flows day to day.</p>
+        </div>
+        <div class="involvement-col-item">
+          <h4>Design System Author</h4>
+          <p>Built a component library from scratch tailored to the density and complexity of legal workflows.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PLATFORM SHOWCASE ════════════════════════ -->
+<section class="platform-section">
+  <div class="platform-headline reveal">
+    <h2>One Platform.<br>Zero Switching.</h2>
+  </div>
+  <p class="platform-subtitle reveal reveal-delay-1">More time spent on clients. Less time spent on coordination.</p>
+
+  <div class="platform-grid">
+
+    <div class="platform-card wide reveal">
+      <div class="platform-card-inner">
+        <div class="platform-card-content">
+          <div class="platform-card-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="2" y="2" width="14" height="14" rx="3" stroke="#d8b87c" stroke-width="1.3"/>
+              <path d="M5 7h8M5 10h5" stroke="#d8b87c" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="platform-card-label">Module 01</div>
+          <div class="platform-card-title">Project Intake</div>
+          <p class="platform-card-desc">Structured intake replaces the unstructured messages. Every new case is captured with context — client details, matter type, urgency, and assigned team — in under 3 minutes. AI prefills common fields based on case category.</p>
+        </div>
+        <div class="platform-card-img-slot">
+          <img src="assets/images/projects/lex/intake.jpg" alt="Project Intake">
+        </div>
+      </div>
+    </div>
+
+    <div class="platform-card accent reveal reveal-delay-1">
+      <div class="platform-card-img-slot">
+        <img src="assets/images/projects/lex/doc-hygiene.jpg" alt="Document Hygiene">
+      </div>
+      <div class="platform-card-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M9 2a7 7 0 100 14A7 7 0 009 2z" stroke="#d8b87c" stroke-width="1.3"/>
+          <path d="M6 9l2 2 4-4" stroke="#d8b87c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="platform-card-label">Module 02</div>
+      <div class="platform-card-title">Document Hygiene</div>
+      <p class="platform-card-desc">Auto-organises uploaded documents into case-relevant categories. Flags missing or expired documents before they become blockers.</p>
+    </div>
+
+    <div class="platform-card accent reveal reveal-delay-1">
+      <div class="platform-card-img-slot">
+        <img src="assets/images/projects/lex/threads.jpg" alt="Client Threads">
+      </div>
+      <div class="platform-card-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M3 5h12M3 9h8M3 13h10" stroke="#d8b87c" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="platform-card-label">Module 03</div>
+      <div class="platform-card-title">Client Threads</div>
+      <p class="platform-card-desc">Threaded conversations per case. No more searching through scattered messages to find what a client said three weeks ago. Every message is case-linked and searchable.</p>
+    </div>
+
+    <div class="platform-card wide reveal reveal-delay-2">
+      <div class="platform-card-inner">
+        <div class="platform-card-content">
+          <div class="platform-card-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="3" y="2" width="12" height="14" rx="2" stroke="#d8b87c" stroke-width="1.3"/>
+              <path d="M6 6h6M6 9h6M6 12h4" stroke="#d8b87c" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="platform-card-label">Module 04</div>
+          <div class="platform-card-title">Legal Documents · TSR Generation</div>
+          <p class="platform-card-desc">AI drafts Title Search Reports and standard legal documents from structured case data. Lawyers review, annotate, and approve — cutting document preparation time from days to hours. Every draft is versioned and traceable.</p>
+        </div>
+        <div class="platform-card-img-slot">
+          <img src="assets/images/projects/lex/tsr-read.jpg" alt="Legal Documents · TSR Generation">
+        </div>
+      </div>
+    </div>
+
+    <div class="platform-card reveal reveal-delay-3">
+      <div class="platform-card-img-slot">
+        <img src="assets/images/projects/lex/doc-history.jpg" alt="Document Intelligence">
+      </div>
+      <div class="platform-card-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <rect x="2" y="3" width="10" height="12" rx="2" stroke="#d8b87c" stroke-width="1.3"/>
+          <path d="M5 7h4M5 10h3" stroke="#d8b87c" stroke-width="1.3" stroke-linecap="round"/>
+          <circle cx="13" cy="13" r="3" stroke="#d8b87c" stroke-width="1.3"/>
+          <path d="M15.5 15.5l1.5 1.5" stroke="#d8b87c" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="platform-card-label">Module 05</div>
+      <div class="platform-card-title">Document Intelligence</div>
+      <p class="platform-card-desc">OCR and AI parse every uploaded document — extracting clauses, dates, and parties automatically. Content is sorted by relevance, cross-referenced against case maps, and flagged for review. No manual reading required to know what's inside.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ DESIGN DECISIONS ════════════════════════ -->
+<section class="decisions-section">
+  <h2 class="decisions-heading reveal">Design<br><em style="font-style:italic;color:var(--accent);">Decisions.</em></h2>
+  <div class="decisions-grid">
+
+    <div class="decision-card reveal">
+      <div class="decision-num">01</div>
+      <div class="decision-title">Thread-first Architecture</div>
+      <p class="decision-desc">Every interaction in the product is anchored to a case thread. This mirrors how lawyers already think — by matter — and prevents context from fragmenting across modules. Navigation always returns you to the thread.</p>
+    </div>
+
+    <div class="decision-card reveal reveal-delay-1">
+      <div class="decision-num">02</div>
+      <div class="decision-title">AI Thoughts Section</div>
+      <p class="decision-desc">Rather than hiding AI suggestions inside dropdowns, we gave AI a dedicated "thoughts" panel per case — visible but unobtrusive. Lawyers could glance, accept, edit, or ignore. Trust was built through transparency, not magic.</p>
+    </div>
+
+    <div class="decision-card reveal reveal-delay-2">
+      <div class="decision-num">03</div>
+      <div class="decision-title">Formular Newspaper Draft</div>
+      <p class="decision-desc">Legal documents were designed like structured newspapers — headline clause at top, supporting detail below, annotations in the margin. This made dense legal content scannable for the first time.</p>
+    </div>
+
+    <div class="decision-card reveal">
+      <div class="decision-num">04</div>
+      <div class="decision-title">3-Line Case Intake</div>
+      <p class="decision-desc">The intake form was ruthlessly shortened to three visible lines — client name, matter type, urgency. Everything else collapses into progressive disclosure. Lawyers resisted long forms; this got adoption within the first week.</p>
+    </div>
+
+    <div class="decision-card reveal reveal-delay-1">
+      <div class="decision-num">05</div>
+      <div class="decision-title">AI + OCR Document Intelligence</div>
+      <p class="decision-desc">Rather than asking lawyers to read every upload, OCR extracts the text and AI maps it — identifying key clauses, parties, and dates instantly. A spatial document map lets advocates orient themselves inside complex files without scrolling.</p>
+    </div>
+
+    <div class="decision-card reveal reveal-delay-2">
+      <div class="decision-num">06</div>
+      <div class="decision-title">Undo-First Error States</div>
+      <p class="decision-desc">Legal work is high-stakes. Every destructive action — archiving a document, closing a thread — had a 5-second undo window. This dramatically reduced support requests and gave lawyers the confidence to act decisively.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ IMPACT CALLOUT ══════════════════════════ -->
+<div class="impact-callout">
+  <div class="impact-callout-sub reveal">The Outcome</div>
+  <h2 class="impact-callout-heading reveal reveal-delay-1">
+    The CEO chose<br>the design<br><em>that held.</em>
+  </h2>
+  <p class="impact-callout-body reveal reveal-delay-2">
+    The development team initially explored AI-assisted build tools to accelerate delivery. The CEO considered them — until it became clear they couldn't replicate the workflow depth, the look, or the feel of what had been designed. My work was chosen as the foundation. To ensure a clean handoff, I upgraded the Figma plan and used AI to generate developer-ready specs. The product shipped, tested well, and gave the firm something it had never had before — a system that could scale without depending on any one person's memory.
+  </p>
+</div>
+
+<!-- ═══ LESSONS ═════════════════════════════════ -->
+<section class="lessons-section">
+  <div class="lessons-grid">
+    <div class="reveal">
+      <div class="section-eyebrow">Reflections</div>
+      <h2 class="lessons-heading">Lessons<br>carried<br>forward.</h2>
+    </div>
+    <div class="lessons-list">
+      <div class="lesson-item reveal">
+        <div class="lesson-title">Designing for Exceptions</div>
+        <p class="lesson-desc">In legal work, the exception is not an edge case — it is the norm. I learned to design for the "what if this document is disputed" or "what if the client changes their case mid-thread" scenarios first, and let the happy path flow from that rigour.</p>
+      </div>
+      <div class="lesson-item reveal reveal-delay-1">
+        <div class="lesson-title">AI Trust is Earned</div>
+        <p class="lesson-desc">Lawyers are trained sceptics. AI suggestions were initially ignored entirely. The turning point was showing AI's reasoning — not just its output. Once advocates could see why the system flagged something, adoption followed naturally.</p>
+      </div>
+      <div class="lesson-item reveal reveal-delay-2">
+        <div class="lesson-title">Stakeholder Humility</div>
+        <p class="lesson-desc">Understanding the politics of a law firm — who defers to whom, which processes are sacred — meant the difference between a design that gets deployed and one that gets shelved. Listening before forming is a design skill, not a soft skill.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CLOSING ══════════════════════════════════ -->
+<section class="closing-section">
+  <div class="closing-bg-text">LEX</div>
+  <div class="closing-eyebrow reveal">Case Closed</div>
+  <h2 class="closing-heading reveal reveal-delay-1">
+    The <em>iPod</em><br>ships.
+  </h2>
+  <p class="closing-quote reveal reveal-delay-2">
+    "It just takes the right team to believe in it long enough."
+  </p>
+  <div class="closing-actions reveal reveal-delay-3">
+    <a href="index.html#work" class="btn-gold">← View all work</a>
+    <a href="project-legal-mobile.html" class="btn-outline">Next project →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <img src="assets/images/logo/dark-logo.svg" alt="Geetapriya" style="height: 30px; width: auto; max-width: 140px; display: block; opacity: 0.85;">
+    <a href="index.html" class="footer-logo">Geetapriya</a>
+  </div>
+  <ul class="footer-links">
+    <li><a href="index.html#work">Work</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="mailto:composetogpriya@gmail.com">Email</a></li>
+    <li><a href="https://linkedin.com/in/composetogpriya" target="_blank">LinkedIn ↗</a></li>
+  </ul>
+</footer>
+
+<script>
+// ─── CURSOR ───────────────────────────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx=0, my=0, rx=0, ry=0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+});
+
+(function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animateRing);
+})();
+
+// ─── SCROLL REVEAL ────────────────────────────────────────────────────────────
+document.documentElement.classList.add('js');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

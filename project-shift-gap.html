@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Closing the Shift Gap — Shift Continuity Platform · Geetapriya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #050505;
+  --white: #f5f2ee;
+  --warm: #1e1b14;
+  --accent: #d8b87c;
+  --accent2: #7c6f5e;
+  --muted: rgba(245,242,238,0.55);
+  --border: rgba(245,242,238,0.08);
+  --accent-glow: rgba(201,169,110,0.15);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--black);
+  color: var(--white);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ──────────────────────────────────────── */
+#cursor {
+  position: fixed; width: 12px; height: 12px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform .1s, width .25s, height .25s, background .25s;
+}
+#cursor-ring {
+  position: fixed; width: 40px; height: 40px;
+  border: 1px solid rgba(201,169,110,0.45); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: transform .15s ease-out, width .3s, height .3s;
+}
+body:has(a:hover) #cursor, body:has(button:hover) #cursor {
+  width: 24px; height: 24px; background: var(--white);
+}
+
+/* ── NAV ─────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 56px;
+  background: rgba(5,5,5,0.6);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(245,242,238,0.05);
+}
+.nav-logo-wrap { display: flex; align-items: center; gap: 12px; }
+.nav-logo {
+  font-family: 'DM Serif Display', serif; font-size: 20px;
+  color: var(--white); text-decoration: none; letter-spacing: -0.02em;
+}
+.nav-back {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--muted); text-decoration: none;
+  letter-spacing: 0.04em; font-weight: 300; transition: color .3s;
+}
+.nav-back:hover { color: var(--accent); }
+.nav-back:hover svg { transform: translateX(-4px); }
+.nav-back svg { transition: transform .3s; }
+
+/* ── KEYFRAMES ───────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ── REVEAL ──────────────────────────────────────── */
+.js .reveal {
+  opacity: 0; transform: translateY(36px);
+  transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+}
+.js .reveal.in { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
+.reveal-delay-4 { transition-delay: .4s; }
+
+/* ── SECTION BASE ────────────────────────────────── */
+section { position: relative; z-index: 10; }
+.section-eyebrow {
+  display: flex; align-items: center; gap: 16px;
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 56px; font-weight: 300;
+}
+.section-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+
+/* ── HERO ────────────────────────────────────────── */
+.cs-hero {
+  position: relative; min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 96px 56px 80px; overflow: hidden;
+  background: var(--black);
+}
+.cs-hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 65% 35%, rgba(201,169,110,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 15% 80%, rgba(201,169,110,0.04) 0%, transparent 60%);
+}
+.cs-hero-bg::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(201,169,110,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,169,110,0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 100%);
+}
+.hero-editorial-num {
+  position: absolute; right: 48px; bottom: 60px;
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(160px, 22vw, 320px);
+  line-height: 1; letter-spacing: -0.06em;
+  color: rgba(245,242,238,0.03);
+  pointer-events: none; z-index: 1; user-select: none;
+}
+.cs-hero-tag {
+  position: relative; z-index: 10;
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 28px;
+  opacity: 0; animation: fadeUp .8s .4s forwards;
+}
+.cs-hero-tag::before { content: ''; width: 28px; height: 1px; background: var(--accent); }
+.cs-hero-title {
+  position: relative; z-index: 10;
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(52px, 8vw, 120px);
+  line-height: 0.92; letter-spacing: -0.04em;
+  color: var(--white); margin-bottom: 36px;
+  max-width: 52%;
+  opacity: 0; animation: fadeUp .9s .6s cubic-bezier(.16,1,.3,1) forwards;
+}
+.cs-hero-title em { font-style: italic; color: var(--accent); }
+.cs-hero-desc {
+  position: relative; z-index: 10;
+  font-size: clamp(14px, 1.4vw, 17px); font-weight: 300;
+  color: rgba(245,242,238,0.4); max-width: 52%; line-height: 1.7;
+  margin-bottom: 56px;
+  opacity: 0; animation: fadeUp .9s .85s forwards;
+}
+.cs-meta-row {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; gap: 48px; flex-wrap: wrap;
+  max-width: 52%;
+  opacity: 0; animation: fadeUp .9s 1.05s forwards;
+}
+.cs-meta-item { display: flex; flex-direction: column; gap: 6px; }
+.cs-meta-label {
+  font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(245,242,238,0.3); font-weight: 300;
+}
+.cs-meta-value {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px; letter-spacing: -0.03em; color: var(--white); line-height: 1;
+}
+.cs-meta-value.small { font-size: 16px; font-family: 'DM Sans', sans-serif; font-weight: 300; }
+.cs-meta-divider { width: 1px; height: 48px; background: var(--border); }
+.cs-hero-tags {
+  position: relative; z-index: 10;
+  display: flex; gap: 8px; flex-wrap: wrap; margin-top: 40px;
+  max-width: 52%;
+  opacity: 0; animation: fadeUp .9s 1.2s forwards;
+}
+.cs-hero-tag-pill {
+  font-size: 11px; letter-spacing: .07em; text-transform: uppercase;
+  color: rgba(245,242,238,0.35);
+  border: 1px solid rgba(245,242,238,0.1);
+  padding: 6px 14px; border-radius: 100px; font-weight: 300;
+}
+
+
+/* ── PROBLEM SECTION ─────────────────────────────── */
+.problem-section { background: #0a0908; padding: 120px 56px; }
+.problem-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+}
+.ps-label {
+  font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  font-weight: 500; padding: 5px 12px; border-radius: 100px;
+  display: inline-flex; margin-bottom: 24px;
+}
+.ps-label.problem { color: #e05c5c; background: rgba(224,92,92,0.1); border: 1px solid rgba(224,92,92,0.2); }
+.ps-label.insight { color: var(--accent); background: rgba(201,169,110,0.08); border: 1px solid rgba(201,169,110,0.2); }
+.ps-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(28px, 3vw, 42px);
+  letter-spacing: -0.025em; line-height: 1.15;
+  color: var(--white); margin-bottom: 20px;
+}
+.ps-body { font-size: 15px; font-weight: 300; color: var(--muted); line-height: 1.85; }
+
+.gap-list { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
+.gap-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 18px 20px;
+  background: rgba(201,169,110,0.04);
+  border: 1px solid rgba(201,169,110,0.1);
+  border-radius: 10px;
+  transition: border-color .3s;
+}
+.gap-item:hover { border-color: rgba(201,169,110,0.25); }
+.gap-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 13px; color: rgba(201,169,110,0.4);
+  font-style: italic; flex-shrink: 0; line-height: 1.6;
+}
+.gap-text { font-size: 13.5px; font-weight: 300; color: var(--muted); line-height: 1.65; }
+
+/* ── TWO ROLES ───────────────────────────────────── */
+.roles-section { background: var(--black); padding: 120px 56px; }
+.roles-eyebrow {
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 48px; font-weight: 300;
+  display: flex; align-items: center; gap: 16px;
+}
+.roles-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.roles-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(36px, 5vw, 72px);
+  letter-spacing: -0.04em; line-height: 1;
+  color: var(--white); margin-bottom: 64px;
+}
+.roles-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+}
+.role-card {
+  background: rgba(10,14,22,0.7);
+  border: 1px solid rgba(201,169,110,0.1);
+  border-radius: 16px; padding: 40px 36px;
+  transition: all .4s cubic-bezier(.16,1,.3,1);
+}
+.role-card:hover {
+  border-color: rgba(201,169,110,0.28);
+  transform: translateY(-4px);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+.role-card-badge {
+  font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+  font-weight: 500; padding: 5px 12px; border-radius: 100px;
+  display: inline-flex; margin-bottom: 20px;
+  color: var(--accent); background: rgba(201,169,110,0.08); border: 1px solid rgba(201,169,110,0.18);
+}
+.role-card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(22px, 2.2vw, 32px);
+  letter-spacing: -0.025em; color: var(--white);
+  margin-bottom: 20px; line-height: 1.15;
+}
+.role-card-items { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+.role-card-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13.5px; font-weight: 300; color: var(--muted); line-height: 1.6;
+}
+.role-card-item::before {
+  content: ''; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--accent); flex-shrink: 0; margin-top: 8px;
+}
+
+/* ── NORTH STAR / CLARITY ────────────────────────── */
+.north-star-section { background: #0a0908; padding: 120px 56px; }
+.north-star-inner {
+  display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start;
+}
+.north-star-label {
+  font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 16px; font-weight: 300;
+}
+.north-star-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 4vw, 56px);
+  letter-spacing: -0.03em; line-height: 1.1;
+  color: var(--white); margin-bottom: 20px;
+}
+.north-star-body {
+  font-size: 14.5px; font-weight: 300; color: var(--muted); line-height: 1.85;
+}
+.north-star-callout {
+  background: rgba(201,169,110,0.06);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  padding: 36px 40px;
+  position: relative; overflow: hidden;
+}
+.north-star-callout::before {
+  content: '"';
+  position: absolute; top: -20px; right: 24px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 120px; color: rgba(201,169,110,0.08);
+  line-height: 1; pointer-events: none;
+}
+.north-star-callout-label {
+  font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 20px; font-weight: 300;
+}
+.north-star-callout-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(18px, 2vw, 26px);
+  line-height: 1.5; letter-spacing: -0.02em;
+  color: var(--white); font-style: italic;
+}
+
+/* ── HERO DASHBOARD MOCKUP ───────────────────────── */
+.cs-hero-mockup {
+  position: absolute; right: 56px;
+  top: 88px; bottom: 60px;
+  width: 42%; max-width: 560px;
+  z-index: 5; display: flex; align-items: center;
+}
+.cs-hero-mockup-inner {
+  border-radius: 14px;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 48px 100px rgba(0,0,0,0.75), 0 0 48px rgba(201,169,110,0.06);
+  background: var(--black);
+  position: relative;
+  --glow-sens: 30;
+  --pointer-deg: 45deg;
+  --pointer-d: 0;
+  --color-sens: calc(var(--glow-sens) + 20);
+}
+.cs-hero-mockup-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(#090d14 0 100%) padding-box,
+    radial-gradient(at 80% 55%, hsla(268,100%,76%,1) 0px, transparent 50%) border-box,
+    radial-gradient(at 69% 34%, hsla(349,100%,74%,1) 0px, transparent 50%) border-box,
+    radial-gradient(at 8% 6%, hsla(136,100%,78%,1) 0px, transparent 50%) border-box,
+    radial-gradient(at 41% 38%, hsla(192,100%,64%,1) 0px, transparent 50%) border-box,
+    radial-gradient(at 86% 85%, hsla(186,100%,74%,1) 0px, transparent 50%) border-box,
+    radial-gradient(at 82% 18%, hsla(52,100%,65%,1) 0px, transparent 50%) border-box,
+    linear-gradient(#c299ff 0 100%) border-box;
+  opacity: calc((var(--pointer-d) - var(--color-sens)) / (100 - var(--color-sens)));
+  mask-image: conic-gradient(from var(--pointer-deg) at center, black 25%, transparent 40%, transparent 60%, black 75%);
+  transition: opacity 0.25s ease-out;
+  pointer-events: none;
+  z-index: 2;
+}
+.cs-hero-mockup-inner::after {
+  content: '';
+  position: absolute;
+  inset: -18px;
+  border-radius: inherit;
+  opacity: calc((var(--pointer-d) - var(--glow-sens)) / (100 - var(--glow-sens)));
+  mask-image: conic-gradient(from var(--pointer-deg) at center, black 2.5%, transparent 10%, transparent 90%, black 97.5%);
+  transition: opacity 0.25s ease-out;
+  pointer-events: none;
+  z-index: 3;
+  box-shadow:
+    inset 0 0 0 1px hsl(40 80% 80% / 100%),
+    inset 0 0 6px 0 hsl(40 80% 80% / 45%),
+    inset 0 0 14px 0 hsl(40 80% 80% / 30%),
+    0 0 8px 0 hsl(40 80% 80% / 26%),
+    0 0 20px 0 hsl(40 80% 80% / 15%);
+}
+.cs-hero-mockup-inner:not(:hover):not(.animating)::before,
+.cs-hero-mockup-inner:not(:hover):not(.animating)::after {
+  opacity: 0 !important;
+}
+.cs-hero-mockup-inner img {
+  width: calc(100% + 8px);
+  margin: -4px;
+  display: block;
+  border: none;
+  outline: none;
+  border-radius: 0;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* ── PLATFORM / BUILDING ─────────────────────────── */
+.platform-section {
+  background: #07080a; padding: 120px 56px;
+  position: relative; overflow: hidden;
+}
+.platform-section::before {
+  content: '';
+  position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 800px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,169,110,0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+.platform-headline {
+  text-align: center; margin-bottom: 16px; position: relative; z-index: 10;
+}
+.platform-headline h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(36px, 5.5vw, 80px);
+  letter-spacing: -0.04em; line-height: 1; color: var(--white);
+}
+.platform-subtitle {
+  text-align: center; font-size: 14px; font-weight: 300;
+  color: var(--muted); letter-spacing: .02em;
+  margin-bottom: 72px; position: relative; z-index: 10;
+}
+.platform-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  position: relative; z-index: 10;
+}
+.platform-card {
+  background: rgba(10,14,22,0.7);
+  border: 1px solid rgba(201,169,110,0.08);
+  border-radius: 16px; padding: 36px 32px;
+  transition: all .4s cubic-bezier(.16,1,.3,1);
+}
+.platform-card:hover {
+  border-color: rgba(201,169,110,0.22);
+  transform: translateY(-4px);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+.platform-card-img-slot {
+  width: 100%; overflow: hidden;
+  border-radius: 10px;
+  background: var(--black);
+  margin-bottom: 24px;
+  aspect-ratio: 16 / 10;
+}
+.platform-card-img-slot img {
+  width: 100%; height: 100%; display: block;
+  object-fit: cover;
+  object-position: top center;
+}
+.platform-card-icon {
+  width: 40px; height: 40px; margin-bottom: 20px; border-radius: 10px;
+  background: rgba(201,169,110,0.08); border: 1px solid rgba(201,169,110,0.16);
+  display: flex; align-items: center; justify-content: center;
+}
+.platform-card-label {
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 10px; font-weight: 300;
+}
+.platform-card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(18px, 1.8vw, 24px);
+  letter-spacing: -0.02em; color: var(--white);
+  margin-bottom: 10px; line-height: 1.2;
+}
+.platform-card-desc {
+  font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.7;
+}
+
+/* ── SHIFT HANDOVER (mixed mobile + web) ─────────── */
+.handover-section { background: var(--black); padding: 120px 56px; }
+.handover-label {
+  font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 16px; font-weight: 300;
+  display: flex; align-items: center; gap: 12px;
+}
+.handover-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+.handover-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 4.5vw, 64px);
+  letter-spacing: -0.04em; line-height: 1.05;
+  color: var(--white); margin-bottom: 16px;
+}
+.handover-sub {
+  font-size: 15px; font-weight: 300; color: var(--muted);
+  max-width: 580px; line-height: 1.75; margin-bottom: 64px;
+}
+/* Screen layout: mobile left + web dashboard right */
+.handover-screens {
+  display: grid; grid-template-columns: 280px 1fr; gap: 32px;
+  align-items: start;
+}
+/* Mobile phone slot */
+.handover-phone {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.handover-phone-inner {
+  width: 100%; overflow: hidden;
+  border-radius: 40px;
+  background: var(--black);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.7), 0 0 32px rgba(201,169,110,0.06);
+  border: 1px solid rgba(201,169,110,0.12);
+}
+.handover-phone-inner img {
+  width: 100%; display: block;
+}
+.handover-screen-label {
+  font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(201,169,110,0.45); font-weight: 300;
+}
+
+/* Web dashboard slot */
+.handover-web {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.handover-web-inner {
+  width: 100%; border-radius: 12px; overflow: hidden;
+  background: rgba(10,14,22,0.7);
+  border: 1px solid rgba(201,169,110,0.14);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+}
+/* Mac-style chrome bar on web screen */
+.handover-web-chrome {
+  height: 32px;
+  background: rgba(12,18,28,0.95);
+  border-bottom: 1px solid rgba(201,169,110,0.08);
+  display: flex; align-items: center; padding: 0 14px; gap: 6px;
+}
+.hc-dot { width: 9px; height: 9px; border-radius: 50%; }
+.hc-dot.red   { background: #ff5f57; }
+.hc-dot.amber { background: #ffbd2e; }
+.hc-dot.green { background: #28c840; }
+.hc-title {
+  margin-left: 12px; font-size: 10px; letter-spacing: .08em;
+  color: rgba(245,242,238,0.25); font-weight: 300;
+}
+.handover-web-screen {
+  background: var(--black); overflow: hidden;
+}
+.handover-web-screen img {
+  width: 100%; display: block;
+  object-fit: cover;
+  object-position: top left;
+}
+
+/* ── SUPERVISOR SECTION ──────────────────────────── */
+.supervisor-section { background: #0a0908; padding: 120px 56px; }
+.supervisor-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 4.5vw, 64px);
+  letter-spacing: -0.04em; line-height: 1.05;
+  color: var(--white); margin-bottom: 16px;
+}
+.supervisor-sub {
+  font-size: 15px; font-weight: 300; color: var(--muted);
+  max-width: 560px; line-height: 1.75; margin-bottom: 64px;
+}
+.supervisor-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+}
+.sup-card {
+  background: rgba(8,12,20,0.7);
+  border: 1px solid rgba(201,169,110,0.09);
+  border-radius: 14px; overflow: hidden;
+  transition: all .4s cubic-bezier(.16,1,.3,1);
+}
+.sup-card:hover {
+  border-color: rgba(201,169,110,0.24);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.5);
+}
+.sup-card-body { padding: 24px 28px 28px; }
+.sup-card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px; letter-spacing: -0.02em;
+  color: var(--white); margin-bottom: 8px; line-height: 1.2;
+}
+.sup-card-desc {
+  font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.7;
+}
+
+/* ── SCALE SECTION (Design decisions) ───────────── */
+.scale-section { background: var(--black); padding: 120px 56px; }
+.scale-grid {
+  display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; align-items: start;
+}
+.scale-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 4.5vw, 60px);
+  letter-spacing: -0.04em; line-height: 1.05;
+  color: var(--white);
+}
+.scale-decisions { display: flex; flex-direction: column; gap: 0; }
+.scale-item {
+  padding: 32px 0 32px 28px;
+  border-left: 2px solid rgba(201,169,110,0.15);
+  margin-left: 4px;
+  border-bottom: 1px solid rgba(245,242,238,0.04);
+  transition: border-left-color .3s;
+}
+.scale-item:hover { border-left-color: var(--accent); }
+.scale-item-num {
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(201,169,110,0.4); margin-bottom: 8px; font-weight: 300;
+}
+.scale-item-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px; letter-spacing: -0.02em;
+  color: var(--white); margin-bottom: 10px; line-height: 1.2;
+}
+.scale-item-desc {
+  font-size: 13.5px; font-weight: 300; color: var(--muted); line-height: 1.75;
+}
+
+/* ── IMPACT SECTION ──────────────────────────────── */
+.impact-section { background: #0a0908; padding: 120px 56px; }
+.impact-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 4.5vw, 64px);
+  letter-spacing: -0.04em; line-height: 1.05;
+  color: var(--white); margin-bottom: 16px;
+}
+.impact-sub {
+  font-size: 15px; font-weight: 300; color: var(--muted);
+  max-width: 560px; line-height: 1.75; margin-bottom: 64px;
+}
+.impact-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+}
+.impact-card {
+  background: rgba(8,12,20,0.7);
+  border: 1px solid rgba(201,169,110,0.09);
+  border-radius: 14px; padding: 36px 32px;
+  position: relative; overflow: hidden;
+  transition: all .4s cubic-bezier(.16,1,.3,1);
+}
+.impact-card:hover {
+  border-color: rgba(201,169,110,0.24);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.5);
+}
+.impact-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .4s cubic-bezier(.16,1,.3,1);
+}
+.impact-card:hover::before { transform: scaleX(1); }
+.impact-card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px; letter-spacing: -0.02em;
+  color: var(--white); margin-bottom: 10px; line-height: 1.2;
+}
+.impact-card-desc {
+  font-size: 13.5px; font-weight: 300; color: var(--muted); line-height: 1.75;
+}
+
+/* ── LESSONS ─────────────────────────────────────── */
+.lessons-section { background: var(--black); padding: 120px 56px; }
+.lessons-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+}
+.lessons-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 4.5vw, 60px);
+  letter-spacing: -0.04em; line-height: 1.05; color: var(--white);
+}
+.lessons-list { display: flex; flex-direction: column; gap: 0; }
+.lesson-item {
+  padding: 32px 0; border-bottom: 1px solid rgba(245,242,238,0.06);
+  transition: all .3s;
+}
+.lesson-item:first-child { border-top: 1px solid rgba(245,242,238,0.06); }
+.lesson-item:hover .lesson-title { color: var(--accent); }
+.lesson-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px; letter-spacing: -0.02em;
+  color: var(--white); margin-bottom: 10px; line-height: 1.2;
+  transition: color .3s;
+}
+.lesson-desc { font-size: 13.5px; font-weight: 300; color: var(--muted); line-height: 1.75; }
+
+/* ── CLOSING ─────────────────────────────────────── */
+.closing-section {
+  padding: 140px 56px 120px; background: var(--black);
+  text-align: center; overflow: hidden; position: relative;
+}
+.closing-bg-text {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  font-family: 'DM Serif Display', serif;
+  font-size: 18vw; color: rgba(245,242,238,0.02);
+  white-space: nowrap; pointer-events: none;
+  letter-spacing: -0.06em; line-height: 1;
+}
+.closing-eyebrow {
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 24px; font-weight: 300;
+  position: relative; z-index: 2;
+}
+.closing-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(52px, 8vw, 120px);
+  letter-spacing: -0.05em; line-height: 0.95;
+  color: var(--white); margin-bottom: 24px; position: relative; z-index: 2;
+}
+.closing-heading em { font-style: italic; color: var(--accent); }
+.closing-quote {
+  font-family: 'DM Serif Display', serif; font-style: italic; font-size: 17px;
+  color: rgba(245,242,238,0.3); max-width: 480px;
+  margin: 0 auto 56px; line-height: 1.7; position: relative; z-index: 2;
+}
+.closing-actions {
+  display: flex; align-items: center; justify-content: center;
+  gap: 24px; position: relative; z-index: 2;
+}
+.btn-gold {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--accent); color: #0a0a0a;
+  font-size: 13.5px; font-weight: 500;
+  padding: 15px 32px; border-radius: 100px;
+  text-decoration: none; letter-spacing: .02em; transition: all .3s;
+}
+.btn-gold:hover {
+  background: var(--white); transform: translateY(-2px);
+  box-shadow: 0 20px 60px rgba(201,169,110,0.3);
+}
+.btn-outline {
+  font-size: 13.5px; color: var(--muted); text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+  transition: color .3s; font-weight: 300; letter-spacing: .04em;
+}
+.btn-outline:hover { color: var(--white); }
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer {
+  position: relative; z-index: 10;
+  border-top: 1px solid var(--border);
+  padding: 32px 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo {
+  font-family: 'DM Serif Display', serif; font-size: 16px;
+  color: rgba(245,242,238,0.3); text-decoration: none;
+}
+.footer-links { display: flex; gap: 32px; list-style: none; }
+.footer-links a {
+  font-size: 12.5px; color: rgba(245,242,238,0.25);
+  text-decoration: none; letter-spacing: .04em; transition: color .3s;
+}
+.footer-links a:hover { color: var(--white); }
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 960px) {
+  nav { padding: 20px 24px; }
+  .cs-hero { padding: 100px 24px 64px; }
+  .cs-hero-title { font-size: 52px; }
+  .cs-hero-mockup { display: none; }
+  .platform-grid { grid-template-columns: 1fr; }
+  .problem-section, .roles-section, .north-star-section,
+  .platform-section, .handover-section, .supervisor-section,
+  .scale-section, .impact-section, .lessons-section,
+  .closing-section { padding: 80px 24px; }
+  .problem-grid, .north-star-inner, .scale-grid,
+  .lessons-grid { grid-template-columns: 1fr; gap: 48px; }
+  .roles-grid, .platform-grid, .supervisor-grid,
+  .impact-grid { grid-template-columns: 1fr; }
+  .handover-screens { grid-template-columns: 1fr; }
+  footer { padding: 24px; flex-direction: column; gap: 24px; }
+}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo-wrap">
+    <img src="assets/images/logo/dark-logo.svg" alt="Geetapriya" style="height: 36px; width: auto; max-width: 160px; display: block;">
+    <a href="index.html" class="nav-logo">Geetapriya</a>
+  </div>
+  <a href="index.html#work" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to work
+  </a>
+</nav>
+
+<!-- ═══ HERO ═══════════════════════════════════════ -->
+<section class="cs-hero">
+  <div class="cs-hero-bg"></div>
+  <div class="hero-editorial-num">01</div>
+
+  <div class="cs-hero-tag">Case Study · Ops Tech · B2B</div>
+
+  <h1 class="cs-hero-title">
+    Closing the<br><em>Shift Gap.</em>
+  </h1>
+
+  <p class="cs-hero-desc">
+    A UX case study on designing for operational continuity — so that the trail of active work never falls between the cracks of a handover.
+  </p>
+
+  <div class="cs-meta-row">
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">My Role</span>
+      <span class="cs-meta-value small">UX Researcher &amp; Designer</span>
+    </div>
+    <div class="cs-meta-divider"></div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Platform</span>
+      <span class="cs-meta-value small">Mobile + Web Dashboard</span>
+    </div>
+    <div class="cs-meta-divider"></div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Domain</span>
+      <span class="cs-meta-value small">B2B · Continuity</span>
+    </div>
+    <div class="cs-meta-divider"></div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Duration</span>
+      <span class="cs-meta-value small">3 Weeks</span>
+    </div>
+    <div class="cs-meta-divider"></div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Team</span>
+      <span class="cs-meta-value small">2 Designers · Data Scientist</span>
+    </div>
+  </div>
+
+  <!-- Hero web dashboard image slot -->
+  <div class="cs-hero-mockup">
+    <div class="cs-hero-mockup-inner" id="shift-gap-glow-image">
+      <img src="assets/images/projects/shift-gap/hero.jpg" alt="Shift Gap Hero">
+    </div>
+  </div>
+
+  <div class="cs-hero-tags">
+    <span class="cs-hero-tag-pill">Ops Tech</span>
+    <span class="cs-hero-tag-pill">Field</span>
+    <span class="cs-hero-tag-pill">Dashboard</span>
+    <span class="cs-hero-tag-pill">Shift Continuity</span>
+    <span class="cs-hero-tag-pill">B2B SaaS</span>
+  </div>
+
+</section>
+
+<!-- ═══ THE GAP NOBODY TALKED ABOUT ══════════════ -->
+<section class="problem-section">
+  <div class="problem-grid">
+    <div class="reveal">
+      <span class="ps-label problem">The Problem</span>
+      <h2 class="ps-heading">The Gap Nobody Talked About.</h2>
+      <p class="ps-body">A culture of borrowing meaning — shift handover was a vague social contract, not a system. The missing information had multiple real-world consequences and left gaps that no individual officer could close alone.</p>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <span class="ps-label insight">What We Found</span>
+      <div class="gap-list">
+        <div class="gap-item">
+          <span class="gap-num">01</span>
+          <span class="gap-text">No visibility over current or future tasks between shifts — incoming officers started blind.</span>
+        </div>
+        <div class="gap-item">
+          <span class="gap-num">02</span>
+          <span class="gap-text">Manual scheduling was manual without workflow — assignments depended on whoever remembered.</span>
+        </div>
+        <div class="gap-item">
+          <span class="gap-num">03</span>
+          <span class="gap-text">Tasks were tied only to the active officer — when a shift ended, so did accountability.</span>
+        </div>
+        <div class="gap-item">
+          <span class="gap-num">04</span>
+          <span class="gap-text">Supervisors had no reliable way to surface team performance in real time.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TWO ROLES. ONE SYSTEM. ════════════════════ -->
+<section class="roles-section">
+  <div class="roles-eyebrow reveal">Understanding the Platform Users</div>
+  <h2 class="roles-heading reveal reveal-delay-1">Two Roles.<br><em style="font-style:italic;color:var(--accent)">One System.</em></h2>
+  <p style="font-size:14px;font-weight:300;color:var(--muted);max-width:640px;line-height:1.75;margin-bottom:56px;" class="reveal reveal-delay-1">Designing for both meant understanding the distinct needs and pressures of each role before designing a single screen.</p>
+  <div class="roles-grid">
+
+    <div class="role-card reveal">
+      <div class="role-card-badge">Junior Officers</div>
+      <div class="role-card-title">In the Field.<br>Acting Now.</div>
+      <div class="role-card-items">
+        <div class="role-card-item">Case creation, quick updates, and task pickup on the go.</div>
+        <div class="role-card-item">Works in high-distraction, fully-mobile environments.</div>
+        <div class="role-card-item">Needs to know the live status of open cases at a glance.</div>
+        <div class="role-card-item">Must handoff cleanly without being slowed down by process.</div>
+      </div>
+    </div>
+
+    <div class="role-card reveal reveal-delay-1">
+      <div class="role-card-badge">Senior Officers</div>
+      <div class="role-card-title">Oversight.<br>Acting Later.</div>
+      <div class="role-card-items">
+        <div class="role-card-item">Needs full visibility across team performance and task load.</div>
+        <div class="role-card-item">Makes decisions from the dashboard — assigns, reassigns, closes.</div>
+        <div class="role-card-item">Flags compliance issues and monitors pending case resolution.</div>
+        <div class="role-card-item">Relies on data to give constructive, evidence-based feedback.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ CLARITY OF PURPOSE ════════════════════════ -->
+<section class="north-star-section">
+  <div class="north-star-inner">
+    <div class="reveal">
+      <div class="north-star-label">Design Direction</div>
+      <h2 class="north-star-heading">Clarity<br>of Purpose.</h2>
+      <p class="north-star-body">Before touching a single screen, I landed on one north star expression — a statement they all agreed on before we started, and one I returned to every time a design decision became unclear.</p>
+    </div>
+    <div class="north-star-callout reveal reveal-delay-2">
+      <div class="north-star-callout-label">North Star</div>
+      <p class="north-star-callout-text">Design a connected system that ensures shift continuity, reduces manual effort, and gives both officers and supervisors real-time visibility into work.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BUILDING THE PLATFORM ════════════════════ -->
+<section class="platform-section">
+  <div class="platform-headline reveal">
+    <h2>Building the<br><em style="font-style:italic;color:var(--accent)">Platform.</em></h2>
+  </div>
+  <p class="platform-subtitle reveal reveal-delay-1">A task-based platform — four components working as a connected ecosystem, ensuring flows from field to supervisor ran without interruption.</p>
+
+  <div class="platform-grid">
+
+    <div class="platform-card reveal">
+      <div class="platform-card-img-slot">
+        <img src="assets/images/projects/shift-gap/mobile.jpg" alt="Mobile App">
+      </div>
+      <div class="platform-card-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <rect x="5" y="1" width="8" height="16" rx="2" stroke="#d8b87c" stroke-width="1.3"/>
+          <circle cx="9" cy="14" r="1" fill="#d8b87c" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="platform-card-label">Component 01</div>
+      <div class="platform-card-title">Mobile App</div>
+      <p class="platform-card-desc">For officers in the field — fast case creation, task pickup, and clean shift handover, all from a mobile screen optimised for distracted, on-the-go use.</p>
+    </div>
+
+    <div class="platform-card reveal reveal-delay-1">
+      <div class="platform-card-img-slot">
+        <img src="assets/images/projects/shift-gap/supervisor.jpg" alt="Supervisor Dashboard">
+      </div>
+      <div class="platform-card-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <rect x="2" y="4" width="14" height="10" rx="2" stroke="#d8b87c" stroke-width="1.3"/>
+          <path d="M6 14v2M12 14v2M4 16h10" stroke="#d8b87c" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M5 8h8M5 10.5h5" stroke="#d8b87c" stroke-width="1.1" stroke-linecap="round" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="platform-card-label">Component 02</div>
+      <div class="platform-card-title">Supervisor Dashboard</div>
+      <p class="platform-card-desc">Fully-featured web view for senior officers — live case states, officer performance, pending resolutions, and compliance flags, all in one command surface.</p>
+    </div>
+
+    <div class="platform-card reveal reveal-delay-2">
+      <div class="platform-card-img-slot">
+        <img src="assets/images/projects/shift-gap/user.jpg" alt="User Management">
+      </div>
+      <div class="platform-card-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="6" r="3.5" stroke="#d8b87c" stroke-width="1.3"/>
+          <path d="M3 15c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#d8b87c" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="platform-card-label">Component 03</div>
+      <div class="platform-card-title">User Management</div>
+      <p class="platform-card-desc">Role configuration, on-boarding, and assignment mapping — so that every officer enters the system with the right view, the right permissions, and the right context from day one.</p>
+    </div>
+
+    <div class="platform-card reveal reveal-delay-3">
+      <div class="platform-card-img-slot">
+        <img src="assets/images/projects/shift-gap/analytics.jpg" alt="Analytics Dashboard">
+      </div>
+      <div class="platform-card-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M3 14l4-4 3 3 5-6" stroke="#d8b87c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="2" y="2" width="14" height="12" rx="2" stroke="#d8b87c" stroke-width="1.3"/>
+        </svg>
+      </div>
+      <div class="platform-card-label">Component 04</div>
+      <div class="platform-card-title">Analytics Dashboard</div>
+      <p class="platform-card-desc">Performance management, team-level data, and compliance health — giving supervisors the evidence they need to make fair, informed decisions at review time.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ THE SHIFT HANDOVER ════════════════════════ -->
+<section class="handover-section">
+  <div class="handover-label reveal">Key Feature</div>
+  <h2 class="handover-heading reveal reveal-delay-1">The Shift Handover.</h2>
+  <p class="handover-sub reveal reveal-delay-1">One flow. Both sides of the transition — the officer going off duty, and the one coming on. Designed so that what one officer knew, the next officer inherited automatically.</p>
+
+  <div class="handover-screens reveal reveal-delay-2">
+
+    <!-- Mobile phone screen (officer) -->
+    <div class="handover-phone">
+      <div class="handover-phone-inner">
+        <img src="assets/images/projects/shift-gap/mobile.jpg" alt="Officer Mobile View">
+      </div>
+      <div class="handover-screen-label">Officer · Mobile</div>
+    </div>
+
+    <!-- Web dashboard screen (senior) -->
+    <div class="handover-web">
+      <div class="handover-web-inner">
+        <div class="handover-web-chrome">
+          <div class="hc-dot red"></div>
+          <div class="hc-dot amber"></div>
+          <div class="hc-dot green"></div>
+          <span class="hc-title">Shift Handover Dashboard</span>
+        </div>
+        <div class="handover-web-screen">
+          <img src="assets/images/projects/shift-gap/handoff.jpg" alt="Shift Handover Dashboard">
+        </div>
+      </div>
+      <div class="handover-screen-label">Senior Officer · Web</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ WHAT SUPERVISORS ACTUALLY NEEDED ═════════ -->
+<section class="supervisor-section">
+  <h2 class="supervisor-heading reveal">What Supervisors<br><em style="font-style:italic;color:var(--accent)">Actually Needed.</em></h2>
+  <p class="supervisor-sub reveal reveal-delay-1">The dashboard was not about more data — it was about the right data, surfaced at exactly the moment a decision needed to be made.</p>
+
+  <div class="supervisor-grid">
+
+    <div class="sup-card reveal">
+      <div class="sup-card-body">
+        <div class="sup-card-title">Drivers Record</div>
+        <p class="sup-card-desc">Officer plans and activity mapped for the current shift — so supervisors always know who's on, where they are, and what they're handling.</p>
+      </div>
+    </div>
+
+    <div class="sup-card reveal reveal-delay-1">
+      <div class="sup-card-body">
+        <div class="sup-card-title">Pending Cases</div>
+        <p class="sup-card-desc">Open matters that need to be assigned before next shift. A dedicated queue so nothing falls through — visible to all senior officers at once.</p>
+      </div>
+    </div>
+
+    <div class="sup-card reveal reveal-delay-2">
+      <div class="sup-card-body">
+        <div class="sup-card-title">Compliance Alerts</div>
+        <p class="sup-card-desc">Automatically surfaces tasks that have missed SLA thresholds, require escalation, or haven't been acknowledged within the expected time window.</p>
+      </div>
+    </div>
+
+    <div class="sup-card reveal reveal-delay-3">
+      <div class="sup-card-body">
+        <div class="sup-card-title">Team Needs</div>
+        <p class="sup-card-desc">Identifies workload imbalances across the team in real time — so supervisors can redistribute before officers burn out or cases stall.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ DESIGNED TO SCALE ════════════════════════ -->
+<section class="scale-section">
+  <div class="scale-grid">
+    <div class="reveal">
+      <div class="section-eyebrow" style="margin-bottom:24px;">Design Approach</div>
+      <h2 class="scale-heading">Designed to Scale,<br>Not Just Ship.</h2>
+    </div>
+    <div class="scale-decisions">
+      <div class="scale-item reveal">
+        <div class="scale-item-num">Decision 01</div>
+        <div class="scale-item-title">Identify and Resolve</div>
+        <p class="scale-item-desc">Rather than patching individual handover failures, we mapped the full lifecycle of a case across a shift — so the system could surface breakage points before they became operational gaps. Every design decision started with identifying the failure first.</p>
+      </div>
+      <div class="scale-item reveal reveal-delay-1">
+        <div class="scale-item-num">Decision 02</div>
+        <div class="scale-item-title">Connect Capabilities</div>
+        <p class="scale-item-desc">Mobile and web were not separate products — they were two views of the same data layer. Designing them in parallel meant every action taken on the phone had a traceable consequence on the dashboard. No orphaned records. No duplicate effort.</p>
+      </div>
+      <div class="scale-item reveal reveal-delay-2">
+        <div class="scale-item-num">Decision 03</div>
+        <div class="scale-item-title">Enable Customisation</div>
+        <p class="scale-item-desc">Field operations vary by region, shift structure, and case type. We built role-based configuration into the system from the start — so it could be deployed across different operational contexts without re-engineering the core.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHAT THIS CHANGES ════════════════════════ -->
+<section class="impact-section">
+  <h2 class="impact-heading reveal">What This <em style="font-style:italic;color:var(--accent)">Changes.</em></h2>
+  <p class="impact-sub reveal reveal-delay-1">The platform replaced informal workarounds with traceable, structured workflows — and the changes compounded across every level of the organisation.</p>
+
+  <div class="impact-grid">
+    <div class="impact-card reveal">
+      <div class="impact-card-title">Streamlined Follow-up</div>
+      <p class="impact-card-desc">All open tasks from an ending shift are automatically surfaced to the incoming officer. Follow-up is no longer a memory exercise — it's a structured handoff built into the flow.</p>
+    </div>
+    <div class="impact-card reveal reveal-delay-1">
+      <div class="impact-card-title">Faster Processing</div>
+      <p class="impact-card-desc">Reduced the average case pickup time by eliminating the verbal briefing. Officers see the context of every open matter instantly, and can begin acting within seconds of coming on duty.</p>
+    </div>
+    <div class="impact-card reveal reveal-delay-2">
+      <div class="impact-card-title">Full Accountability</div>
+      <p class="impact-card-desc">Every action is time-stamped, role-linked, and case-attributed. Supervisors can see exactly who did what, when — and officers can no longer fall back on "I didn't know" as an answer.</p>
+    </div>
+    <div class="impact-card reveal reveal-delay-3">
+      <div class="impact-card-title">Real-Time Visibility</div>
+      <p class="impact-card-desc">Supervisors now have a live, accurate picture of their team at any moment in a shift — not a version constructed from memory and morning briefings. Decisions became faster and fairer.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHAT THIS PROJECT TAUGHT ME ══════════════ -->
+<section class="lessons-section">
+  <div class="lessons-grid">
+    <div class="reveal">
+      <div class="section-eyebrow">Reflections</div>
+      <h2 class="lessons-heading">What This<br>Project<br>Taught Me.</h2>
+    </div>
+    <div class="lessons-list">
+      <div class="lesson-item reveal">
+        <div class="lesson-title">Operational gaps, not technology gaps, are often the root cause of system failures.</div>
+        <p class="lesson-desc">The problem was never that officers lacked tools — it was that the handover ritual had no structure. The design intervention wasn't technological; it was organisational. I learned to ask "why does this break?" before asking "what should we build?"</p>
+      </div>
+      <div class="lesson-item reveal reveal-delay-1">
+        <div class="lesson-title">Platform design demands you hold two mental models simultaneously.</div>
+        <p class="lesson-desc">Designing for both the mobile-first junior officer and the dashboard-native supervisor meant constantly switching between the constraints of a 390px screen and the information density of a 1440px command view — and keeping both coherent as a single, connected system.</p>
+      </div>
+      <div class="lesson-item reveal reveal-delay-2">
+        <div class="lesson-title">The person designing for scale is often the only one who sees it.</div>
+        <p class="lesson-desc">Stakeholders wanted features. Users wanted relief. Only the designer could hold the question of "what happens when this is running across 200 shifts simultaneously?" — and that perspective, held consistently, was what made the product durable rather than just deliverable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ OUTCOME ══════════════════════════════════════ -->
+<section class="closing-section" style="padding-bottom: 0;">
+  <div class="closing-eyebrow reveal">Outcome</div>
+  <h2 class="closing-heading reveal reveal-delay-1" style="font-size: clamp(32px,4.5vw,64px); margin-bottom: 40px;">
+    Shipped to<br><em>Logan City Council,</em><br>Australia.
+  </h2>
+  <div style="display:grid; grid-template-columns: repeat(3,1fr); gap: 24px; max-width: 800px; margin: 0 auto 80px; text-align: left;" class="reveal reveal-delay-2">
+    <div style="background: rgba(201,169,110,0.06); border: 1px solid rgba(201,169,110,0.15); border-radius: 14px; padding: 28px 24px;">
+      <div style="font-family:'DM Serif Display',serif; font-size: 40px; letter-spacing:-0.04em; color: var(--accent); line-height:1; margin-bottom:10px;">100<sup style="font-size:22px;">+</sup></div>
+      <div style="font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.6;">Patrol officers and senior officers onboarded as active users</div>
+    </div>
+    <div style="background: rgba(201,169,110,0.06); border: 1px solid rgba(201,169,110,0.15); border-radius: 14px; padding: 28px 24px;">
+      <div style="font-family:'DM Serif Display',serif; font-size: 40px; letter-spacing:-0.04em; color: var(--accent); line-height:1; margin-bottom:10px;">2</div>
+      <div style="font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.6;">Roles served — field officers on mobile, supervisors on web dashboard</div>
+    </div>
+    <div style="background: rgba(201,169,110,0.06); border: 1px solid rgba(201,169,110,0.15); border-radius: 14px; padding: 28px 24px;">
+      <div style="font-family:'DM Serif Display',serif; font-size: 40px; letter-spacing:-0.04em; color: var(--accent); line-height:1; margin-bottom:10px;">+<span style="font-size:28px;">KPIs</span></div>
+      <div style="font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.6;">Delivered beyond the brief — analytics, live updates, and AI approvals added over the original pending-ticket scope</div>
+    </div>
+  </div>
+  <p class="reveal reveal-delay-3" style="font-size: 14px; font-weight: 300; color: rgba(245,242,238,0.3); letter-spacing: 0.04em; margin-bottom: 80px;">Screens shown are NDA-compliant representations generated for presentation purposes.</p>
+</section>
+
+<!-- ═══ CLOSING ═══════════════════════════════════ -->
+<section class="closing-section">
+  <div class="closing-bg-text">SHIFT</div>
+  <div class="closing-eyebrow reveal">Case Closed</div>
+  <h2 class="closing-heading reveal reveal-delay-1">
+    When shifts end,<br>cases <em>don't.</em>
+  </h2>
+  <p class="closing-quote reveal reveal-delay-2">
+    "The best handover is the one the next officer never has to ask for."
+  </p>
+  <div class="closing-actions reveal reveal-delay-3">
+    <a href="index.html#work" class="btn-gold">← View all work</a>
+    <a href="project-ctmap.html" class="btn-outline">Next project →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <img src="assets/images/logo/dark-logo.svg" alt="Geetapriya" style="height: 30px; width: auto; max-width: 140px; display: block; opacity: 0.85;">
+    <a href="index.html" class="footer-logo">Geetapriya</a>
+  </div>
+  <ul class="footer-links">
+    <li><a href="index.html#work">Work</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="mailto:composetogpriya@gmail.com">Email</a></li>
+    <li><a href="https://linkedin.com/in/composetogpriya" target="_blank">LinkedIn ↗</a></li>
+  </ul>
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+});
+(function animateRing(){
+  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animateRing);
+})();
+document.documentElement.classList.add('js');
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Glowing edge effect for hero image.
+const glowImage = document.getElementById('shift-gap-glow-image');
+if (glowImage) {
+  const clamp = (value, min = 0, max = 100) => Math.min(Math.max(value, min), max);
+  const round = (value, precision = 3) => Number(value.toFixed(precision));
+
+  const angleFromPointer = (dx, dy) => {
+    if (dx === 0 && dy === 0) return 0;
+    let angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+    if (angle < 0) angle += 360;
+    return angle;
+  };
+
+  glowImage.addEventListener('pointermove', (e) => {
+    const rect = glowImage.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const dx = x - cx;
+    const dy = y - cy;
+    const kx = dx !== 0 ? cx / Math.abs(dx) : Infinity;
+    const ky = dy !== 0 ? cy / Math.abs(dy) : Infinity;
+    const edge = clamp(1 / Math.min(kx, ky), 0, 1);
+    const angle = angleFromPointer(dx, dy);
+
+    glowImage.style.setProperty('--pointer-deg', `${round(angle)}deg`);
+    glowImage.style.setProperty('--pointer-d', `${round(edge * 100)}`);
+
+    if (glowImage.classList.contains('animating')) glowImage.classList.remove('animating');
+  });
+
+  setTimeout(() => {
+    glowImage.classList.add('animating');
+    const angleStart = 110;
+    const angleEnd = 465;
+    glowImage.style.setProperty('--pointer-deg', `${angleStart}deg`);
+    const start = performance.now();
+
+    const animate = (now) => {
+      if (!glowImage.classList.contains('animating')) return;
+      const elapsed = now - start;
+
+      if (elapsed > 500 && elapsed < 1000) {
+        const t = (elapsed - 500) / 500;
+        const ease = 1 - Math.pow(1 - t, 3);
+        glowImage.style.setProperty('--pointer-d', `${ease * 100}`);
+      }
+      if (elapsed > 500 && elapsed < 2000) {
+        const t = (elapsed - 500) / 1500;
+        const ease = t * t * t;
+        const d = (angleEnd - angleStart) * (ease * 0.5) + angleStart;
+        glowImage.style.setProperty('--pointer-deg', `${d}deg`);
+      }
+      if (elapsed >= 2000 && elapsed < 4250) {
+        const t = (elapsed - 2000) / 2250;
+        const ease = 1 - Math.pow(1 - t, 3);
+        const d = (angleEnd - angleStart) * (0.5 + ease * 0.5) + angleStart;
+        glowImage.style.setProperty('--pointer-deg', `${d}deg`);
+      }
+      if (elapsed > 3000 && elapsed < 4500) {
+        const t = (elapsed - 3000) / 1500;
+        const ease = t * t * t;
+        glowImage.style.setProperty('--pointer-d', `${(1 - ease) * 100}`);
+      }
+
+      if (elapsed < 4500) {
+        requestAnimationFrame(animate);
+      } else {
+        glowImage.classList.remove('animating');
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, 500);
+}
+</script>
+</body>
+</html>
