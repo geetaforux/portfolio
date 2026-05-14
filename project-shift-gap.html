@@ -4,8 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Closing the Shift Gap — Shift Continuity Platform · Geetapriya</title>
+<meta name="description" content="How I designed a shift handover system for field supervisors at Sensen.AI — eliminating incomplete task handoffs and making every pending item visible the moment control changes hands.">
+
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -22,7 +26,7 @@
 
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Space Mono', monospace;
   background: var(--black);
   color: var(--white);
   overflow-x: hidden;
@@ -59,7 +63,7 @@ nav {
 }
 .nav-logo-wrap { display: flex; align-items: center; gap: 12px; }
 .nav-logo {
-  font-family: 'DM Serif Display', serif; font-size: 20px;
+  font-family: 'Syne', sans-serif; font-size: 20px;
   color: var(--white); text-decoration: none; letter-spacing: -0.02em;
 }
 .nav-back {
@@ -122,7 +126,7 @@ section { position: relative; z-index: 10; }
 }
 .hero-editorial-num {
   position: absolute; right: 48px; bottom: 60px;
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(160px, 22vw, 320px);
   line-height: 1; letter-spacing: -0.06em;
   color: rgba(245,242,238,0.03);
@@ -138,9 +142,9 @@ section { position: relative; z-index: 10; }
 .cs-hero-tag::before { content: ''; width: 28px; height: 1px; background: var(--accent); }
 .cs-hero-title {
   position: relative; z-index: 10;
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(52px, 8vw, 120px);
-  line-height: 0.92; letter-spacing: -0.04em;
+  line-height: 0.97; letter-spacing: -0.04em;
   color: var(--white); margin-bottom: 36px;
   max-width: 52%;
   opacity: 0; animation: fadeUp .9s .6s cubic-bezier(.16,1,.3,1) forwards;
@@ -165,10 +169,10 @@ section { position: relative; z-index: 10; }
   color: rgba(245,242,238,0.3); font-weight: 300;
 }
 .cs-meta-value {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: 26px; letter-spacing: -0.03em; color: var(--white); line-height: 1;
 }
-.cs-meta-value.small { font-size: 16px; font-family: 'DM Sans', sans-serif; font-weight: 300; }
+.cs-meta-value.small { font-size: 16px; font-family: 'Space Mono', monospace; font-weight: 300; }
 .cs-meta-divider { width: 1px; height: 48px; background: var(--border); }
 .cs-hero-tags {
   position: relative; z-index: 10;
@@ -197,7 +201,7 @@ section { position: relative; z-index: 10; }
 .ps-label.problem { color: #e05c5c; background: rgba(224,92,92,0.1); border: 1px solid rgba(224,92,92,0.2); }
 .ps-label.insight { color: var(--accent); background: rgba(201,169,110,0.08); border: 1px solid rgba(201,169,110,0.2); }
 .ps-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(28px, 3vw, 42px);
   letter-spacing: -0.025em; line-height: 1.15;
   color: var(--white); margin-bottom: 20px;
@@ -215,7 +219,7 @@ section { position: relative; z-index: 10; }
 }
 .gap-item:hover { border-color: rgba(201,169,110,0.25); }
 .gap-num {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: 13px; color: rgba(201,169,110,0.4);
   font-style: italic; flex-shrink: 0; line-height: 1.6;
 }
@@ -230,7 +234,7 @@ section { position: relative; z-index: 10; }
 }
 .roles-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
 .roles-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(36px, 5vw, 72px);
   letter-spacing: -0.04em; line-height: 1;
   color: var(--white); margin-bottom: 64px;
@@ -256,7 +260,7 @@ section { position: relative; z-index: 10; }
   color: var(--accent); background: rgba(201,169,110,0.08); border: 1px solid rgba(201,169,110,0.18);
 }
 .role-card-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(22px, 2.2vw, 32px);
   letter-spacing: -0.025em; color: var(--white);
   margin-bottom: 20px; line-height: 1.15;
@@ -281,7 +285,7 @@ section { position: relative; z-index: 10; }
   color: var(--accent); margin-bottom: 16px; font-weight: 300;
 }
 .north-star-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(32px, 4vw, 56px);
   letter-spacing: -0.03em; line-height: 1.1;
   color: var(--white); margin-bottom: 20px;
@@ -299,7 +303,7 @@ section { position: relative; z-index: 10; }
 .north-star-callout::before {
   content: '"';
   position: absolute; top: -20px; right: 24px;
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: 120px; color: rgba(201,169,110,0.08);
   line-height: 1; pointer-events: none;
 }
@@ -308,7 +312,7 @@ section { position: relative; z-index: 10; }
   color: var(--accent); margin-bottom: 20px; font-weight: 300;
 }
 .north-star-callout-text {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(18px, 2vw, 26px);
   line-height: 1.5; letter-spacing: -0.02em;
   color: var(--white); font-style: italic;
@@ -325,55 +329,9 @@ section { position: relative; z-index: 10; }
   border-radius: 14px;
   overflow: hidden;
   border: none;
-  box-shadow: 0 48px 100px rgba(0,0,0,0.75), 0 0 48px rgba(201,169,110,0.06);
+  box-shadow: 0 48px 100px rgba(0,0,0,0.75);
   background: var(--black);
   position: relative;
-  --glow-sens: 30;
-  --pointer-deg: 45deg;
-  --pointer-d: 0;
-  --color-sens: calc(var(--glow-sens) + 20);
-}
-.cs-hero-mockup-inner::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  border: 1px solid transparent;
-  background:
-    linear-gradient(#090d14 0 100%) padding-box,
-    radial-gradient(at 80% 55%, hsla(268,100%,76%,1) 0px, transparent 50%) border-box,
-    radial-gradient(at 69% 34%, hsla(349,100%,74%,1) 0px, transparent 50%) border-box,
-    radial-gradient(at 8% 6%, hsla(136,100%,78%,1) 0px, transparent 50%) border-box,
-    radial-gradient(at 41% 38%, hsla(192,100%,64%,1) 0px, transparent 50%) border-box,
-    radial-gradient(at 86% 85%, hsla(186,100%,74%,1) 0px, transparent 50%) border-box,
-    radial-gradient(at 82% 18%, hsla(52,100%,65%,1) 0px, transparent 50%) border-box,
-    linear-gradient(#c299ff 0 100%) border-box;
-  opacity: calc((var(--pointer-d) - var(--color-sens)) / (100 - var(--color-sens)));
-  mask-image: conic-gradient(from var(--pointer-deg) at center, black 25%, transparent 40%, transparent 60%, black 75%);
-  transition: opacity 0.25s ease-out;
-  pointer-events: none;
-  z-index: 2;
-}
-.cs-hero-mockup-inner::after {
-  content: '';
-  position: absolute;
-  inset: -18px;
-  border-radius: inherit;
-  opacity: calc((var(--pointer-d) - var(--glow-sens)) / (100 - var(--glow-sens)));
-  mask-image: conic-gradient(from var(--pointer-deg) at center, black 2.5%, transparent 10%, transparent 90%, black 97.5%);
-  transition: opacity 0.25s ease-out;
-  pointer-events: none;
-  z-index: 3;
-  box-shadow:
-    inset 0 0 0 1px hsl(40 80% 80% / 100%),
-    inset 0 0 6px 0 hsl(40 80% 80% / 45%),
-    inset 0 0 14px 0 hsl(40 80% 80% / 30%),
-    0 0 8px 0 hsl(40 80% 80% / 26%),
-    0 0 20px 0 hsl(40 80% 80% / 15%);
-}
-.cs-hero-mockup-inner:not(:hover):not(.animating)::before,
-.cs-hero-mockup-inner:not(:hover):not(.animating)::after {
-  opacity: 0 !important;
 }
 .cs-hero-mockup-inner img {
   width: calc(100% + 8px);
@@ -402,7 +360,7 @@ section { position: relative; z-index: 10; }
   text-align: center; margin-bottom: 16px; position: relative; z-index: 10;
 }
 .platform-headline h2 {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(36px, 5.5vw, 80px);
   letter-spacing: -0.04em; line-height: 1; color: var(--white);
 }
@@ -448,7 +406,7 @@ section { position: relative; z-index: 10; }
   color: var(--accent); margin-bottom: 10px; font-weight: 300;
 }
 .platform-card-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(18px, 1.8vw, 24px);
   letter-spacing: -0.02em; color: var(--white);
   margin-bottom: 10px; line-height: 1.2;
@@ -466,7 +424,7 @@ section { position: relative; z-index: 10; }
 }
 .handover-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
 .handover-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(32px, 4.5vw, 64px);
   letter-spacing: -0.04em; line-height: 1.05;
   color: var(--white); margin-bottom: 16px;
@@ -536,7 +494,7 @@ section { position: relative; z-index: 10; }
 /* ── SUPERVISOR SECTION ──────────────────────────── */
 .supervisor-section { background: #0a0908; padding: 120px 56px; }
 .supervisor-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(32px, 4.5vw, 64px);
   letter-spacing: -0.04em; line-height: 1.05;
   color: var(--white); margin-bottom: 16px;
@@ -561,7 +519,7 @@ section { position: relative; z-index: 10; }
 }
 .sup-card-body { padding: 24px 28px 28px; }
 .sup-card-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: 20px; letter-spacing: -0.02em;
   color: var(--white); margin-bottom: 8px; line-height: 1.2;
 }
@@ -575,7 +533,7 @@ section { position: relative; z-index: 10; }
   display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; align-items: start;
 }
 .scale-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(32px, 4.5vw, 60px);
   letter-spacing: -0.04em; line-height: 1.05;
   color: var(--white);
@@ -594,7 +552,7 @@ section { position: relative; z-index: 10; }
   color: rgba(201,169,110,0.4); margin-bottom: 8px; font-weight: 300;
 }
 .scale-item-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: 22px; letter-spacing: -0.02em;
   color: var(--white); margin-bottom: 10px; line-height: 1.2;
 }
@@ -605,7 +563,7 @@ section { position: relative; z-index: 10; }
 /* ── IMPACT SECTION ──────────────────────────────── */
 .impact-section { background: #0a0908; padding: 120px 56px; }
 .impact-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(32px, 4.5vw, 64px);
   letter-spacing: -0.04em; line-height: 1.05;
   color: var(--white); margin-bottom: 16px;
@@ -638,7 +596,7 @@ section { position: relative; z-index: 10; }
 }
 .impact-card:hover::before { transform: scaleX(1); }
 .impact-card-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: 22px; letter-spacing: -0.02em;
   color: var(--white); margin-bottom: 10px; line-height: 1.2;
 }
@@ -652,7 +610,7 @@ section { position: relative; z-index: 10; }
   display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
 }
 .lessons-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(32px, 4.5vw, 60px);
   letter-spacing: -0.04em; line-height: 1.05; color: var(--white);
 }
@@ -664,7 +622,7 @@ section { position: relative; z-index: 10; }
 .lesson-item:first-child { border-top: 1px solid rgba(245,242,238,0.06); }
 .lesson-item:hover .lesson-title { color: var(--accent); }
 .lesson-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: 22px; letter-spacing: -0.02em;
   color: var(--white); margin-bottom: 10px; line-height: 1.2;
   transition: color .3s;
@@ -679,7 +637,7 @@ section { position: relative; z-index: 10; }
 .closing-bg-text {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%,-50%);
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: 18vw; color: rgba(245,242,238,0.02);
   white-space: nowrap; pointer-events: none;
   letter-spacing: -0.06em; line-height: 1;
@@ -690,14 +648,14 @@ section { position: relative; z-index: 10; }
   position: relative; z-index: 2;
 }
 .closing-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(52px, 8vw, 120px);
   letter-spacing: -0.05em; line-height: 0.95;
   color: var(--white); margin-bottom: 24px; position: relative; z-index: 2;
 }
 .closing-heading em { font-style: italic; color: var(--accent); }
 .closing-quote {
-  font-family: 'DM Serif Display', serif; font-style: italic; font-size: 17px;
+  font-family: 'Syne', sans-serif; font-style: italic; font-size: 17px;
   color: rgba(245,242,238,0.3); max-width: 480px;
   margin: 0 auto 56px; line-height: 1.7; position: relative; z-index: 2;
 }
@@ -731,7 +689,7 @@ footer {
   display: flex; align-items: center; justify-content: space-between;
 }
 .footer-logo {
-  font-family: 'DM Serif Display', serif; font-size: 16px;
+  font-family: 'Syne', sans-serif; font-size: 16px;
   color: rgba(245,242,238,0.3); text-decoration: none;
 }
 .footer-links { display: flex; gap: 32px; list-style: none; }
@@ -1211,82 +1169,6 @@ const obs = new IntersectionObserver(entries=>{
 },{threshold:.08});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// Glowing edge effect for hero image.
-const glowImage = document.getElementById('shift-gap-glow-image');
-if (glowImage) {
-  const clamp = (value, min = 0, max = 100) => Math.min(Math.max(value, min), max);
-  const round = (value, precision = 3) => Number(value.toFixed(precision));
-
-  const angleFromPointer = (dx, dy) => {
-    if (dx === 0 && dy === 0) return 0;
-    let angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
-    if (angle < 0) angle += 360;
-    return angle;
-  };
-
-  glowImage.addEventListener('pointermove', (e) => {
-    const rect = glowImage.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const cx = rect.width / 2;
-    const cy = rect.height / 2;
-    const dx = x - cx;
-    const dy = y - cy;
-    const kx = dx !== 0 ? cx / Math.abs(dx) : Infinity;
-    const ky = dy !== 0 ? cy / Math.abs(dy) : Infinity;
-    const edge = clamp(1 / Math.min(kx, ky), 0, 1);
-    const angle = angleFromPointer(dx, dy);
-
-    glowImage.style.setProperty('--pointer-deg', `${round(angle)}deg`);
-    glowImage.style.setProperty('--pointer-d', `${round(edge * 100)}`);
-
-    if (glowImage.classList.contains('animating')) glowImage.classList.remove('animating');
-  });
-
-  setTimeout(() => {
-    glowImage.classList.add('animating');
-    const angleStart = 110;
-    const angleEnd = 465;
-    glowImage.style.setProperty('--pointer-deg', `${angleStart}deg`);
-    const start = performance.now();
-
-    const animate = (now) => {
-      if (!glowImage.classList.contains('animating')) return;
-      const elapsed = now - start;
-
-      if (elapsed > 500 && elapsed < 1000) {
-        const t = (elapsed - 500) / 500;
-        const ease = 1 - Math.pow(1 - t, 3);
-        glowImage.style.setProperty('--pointer-d', `${ease * 100}`);
-      }
-      if (elapsed > 500 && elapsed < 2000) {
-        const t = (elapsed - 500) / 1500;
-        const ease = t * t * t;
-        const d = (angleEnd - angleStart) * (ease * 0.5) + angleStart;
-        glowImage.style.setProperty('--pointer-deg', `${d}deg`);
-      }
-      if (elapsed >= 2000 && elapsed < 4250) {
-        const t = (elapsed - 2000) / 2250;
-        const ease = 1 - Math.pow(1 - t, 3);
-        const d = (angleEnd - angleStart) * (0.5 + ease * 0.5) + angleStart;
-        glowImage.style.setProperty('--pointer-deg', `${d}deg`);
-      }
-      if (elapsed > 3000 && elapsed < 4500) {
-        const t = (elapsed - 3000) / 1500;
-        const ease = t * t * t;
-        glowImage.style.setProperty('--pointer-d', `${(1 - ease) * 100}`);
-      }
-
-      if (elapsed < 4500) {
-        requestAnimationFrame(animate);
-      } else {
-        glowImage.classList.remove('animating');
-      }
-    };
-
-    requestAnimationFrame(animate);
-  }, 500);
-}
 </script>
 </body>
 </html>

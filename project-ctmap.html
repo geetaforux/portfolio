@@ -4,8 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CT-MAP — Mortgage System in Synchrony · Geetapriya</title>
+<meta name="description" content="Unifying three siloed portals for bank managers, customers, and legal advocates into a single AI-augmented loan origination system — cutting cross-team friction at every handoff.">
+
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -30,7 +34,7 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Space Mono', monospace;
   background: var(--black);
   color: var(--white);
   overflow-x: hidden;
@@ -72,7 +76,7 @@ nav {
   width: auto; height: auto; border-radius: 0; flex-shrink: 0;
 }
 .nav-logo {
-  font-family: 'DM Serif Display', serif; font-size: 20px;
+  font-family: 'Syne', sans-serif; font-size: 20px;
   color: var(--white); text-decoration: none; letter-spacing: -0.02em;
 }
 .nav-links { display: flex; gap: 40px; list-style: none; }
@@ -146,7 +150,7 @@ nav {
 
 .cs-hero-title {
   position: relative; z-index: 10;
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(52px, 7.5vw, 112px);
   line-height: 0.94; letter-spacing: -0.04em;
   color: var(--white);
@@ -179,10 +183,10 @@ nav {
   font-weight: 300;
 }
 .cs-meta-value {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: 28px; letter-spacing: -0.03em; color: var(--white); line-height: 1;
 }
-.cs-meta-value.small { font-size: 17px; font-family: 'DM Sans', sans-serif; font-weight: 300; }
+.cs-meta-value.small { font-size: 17px; font-family: 'Space Mono', monospace; font-weight: 300; }
 .cs-meta-divider { width: 1px; height: 48px; background: var(--border); }
 
 .cs-hero-tags {
@@ -297,7 +301,7 @@ section { position: relative; z-index: 10; }
 .ps-label.solution { color: #4cdf8a; background: rgba(76,223,138,0.1); border: 1px solid rgba(76,223,138,0.2); }
 
 .ps-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(28px, 3vw, 40px);
   letter-spacing: -0.025em; line-height: 1.15;
   color: var(--white); margin-bottom: 20px;
@@ -325,7 +329,7 @@ section { position: relative; z-index: 10; }
 /* ── THREE PILLARS ───────────────────────────────── */
 .pillars-section { background: var(--black); padding: 120px 56px; }
 .pillars-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(36px, 5vw, 64px);
   letter-spacing: -0.04em; text-align: center;
   color: var(--white); margin-bottom: 72px; line-height: 1.05;
@@ -361,7 +365,7 @@ section { position: relative; z-index: 10; }
 .pillar-icon rect, .pillar-icon path, .pillar-icon circle, .pillar-icon line { stroke-width: 1.5; }
 
 .pillar-name {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: 22px; letter-spacing: -0.02em;
   margin-bottom: 12px; line-height: 1.2;
 }
@@ -411,7 +415,7 @@ section { position: relative; z-index: 10; }
   color: var(--accent); margin-bottom: 16px; font-weight: 300;
 }
 .portal-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(28px, 3vw, 44px);
   letter-spacing: -0.03em; line-height: 1.1;
   color: var(--white); margin-bottom: 20px;
@@ -548,7 +552,7 @@ section { position: relative; z-index: 10; }
   content: ''; width: 20px; height: 1px; background: var(--cs-gold);
 }
 .ai-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(36px, 5vw, 64px);
   letter-spacing: -0.04em; line-height: 1.0;
   color: var(--white); margin-bottom: 56px;
@@ -577,7 +581,7 @@ section { position: relative; z-index: 10; }
 }
 .ai-metric-card:hover { border-color: rgba(240,180,41,0.3); }
 .ai-metric-value {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: 52px; letter-spacing: -0.05em; line-height: 1;
   color: var(--cs-gold); margin-bottom: 8px;
 }
@@ -589,7 +593,7 @@ section { position: relative; z-index: 10; }
 /* ── MEASURED IMPACT ─────────────────────────────── */
 .impact-section { background: #050505; padding: 120px 56px; }
 .impact-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(36px, 5vw, 64px);
   letter-spacing: -0.04em; text-align: center;
   color: var(--white); margin-bottom: 72px;
@@ -612,7 +616,7 @@ section { position: relative; z-index: 10; }
 .impact-card:hover::before { width: 80%; }
 .impact-card:hover { background: rgba(25,25,25,0.8); }
 .impact-value {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(48px, 6vw, 80px);
   letter-spacing: -0.05em; line-height: 1;
   color: var(--accent); margin-bottom: 16px;
@@ -637,7 +641,7 @@ section { position: relative; z-index: 10; }
   color: var(--accent); margin-bottom: 32px; font-weight: 300;
 }
 .closing-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Syne', sans-serif;
   font-size: clamp(36px, 5vw, 68px);
   letter-spacing: -0.04em; line-height: 1.05;
   color: var(--white); margin-bottom: 28px;
@@ -679,7 +683,7 @@ footer {
   display: flex; align-items: center; justify-content: space-between;
 }
 .footer-logo {
-  font-family: 'DM Serif Display', serif; font-size: 16px;
+  font-family: 'Syne', sans-serif; font-size: 16px;
   color: rgba(245,242,238,0.3); text-decoration: none;
 }
 .footer-links { display: flex; gap: 32px; list-style: none; }
